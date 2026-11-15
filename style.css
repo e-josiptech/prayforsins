@@ -595,6 +595,28 @@ h3.live.flash {
     opacity: 0.8;
 }
 
+/* 7 / seven colors — java.js picks one at random for each */
+.seven.c-white { color: #ffffff; }
+.seven.c-red   { color: #c40000; }
+
+/* Phones & tablets (touch screens only — desktop unaffected):
+   iPhone Safari darkens elements that use the SVG warp filter,
+   which made the red 7s vanish into the black background.
+   Keep the low-quality blur, skip the warp, use a slightly brighter red. */
+@media (hover: none) and (pointer: coarse) {
+    .seven.big .warp {
+        filter: blur(1.6px) contrast(1.3);
+    }
+
+    .seven.c-red {
+        color: #e3121b;
+    }
+
+    .live-pop-text {
+        filter: blur(0.7px) contrast(1.6);
+    }
+}
+
 /* words are just decoration, not clickable */
 .seven.word {
     font-size: 22px;

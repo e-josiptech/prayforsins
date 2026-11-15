@@ -9,7 +9,6 @@
    ========================================================== */
 (function () {
     var LINK = "https://adventisti.hr/";
-    var COLORS = ["#ffffff", "#c40000"];
     // all timings are [min, max] in ms — a new random value every time
     var BIG_LIFE = [3000, 5600];   // how long a big 7 stays (incl. in/out)
     var BIG_GAP = [1000, 3000];    // pause before the next 7 on the other side
@@ -56,7 +55,8 @@
             el.textContent = text;
         }
         el.className = "seven " + cls;
-        el.style.color = pick(COLORS);
+        // white or red, picked at random every time (colors in style.css)
+        el.classList.add(Math.random() < 0.5 ? "c-white" : "c-red");
         el.style.visibility = "hidden";
         layer.appendChild(el);
 
