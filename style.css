@@ -219,10 +219,22 @@ h2.live {
     object-fit: fill;
     filter: grayscale(1) contrast(1.15) blur(0.6px);
     opacity: 0.55;
+    /* slowly fades away and comes back, 7s loop */
+    animation: bottom-fade 7s ease-in-out infinite;
 }
 
 .bottom-pic-link:hover .bottom-pic {
-    opacity: 0.75;
+    animation-play-state: paused;
+}
+
+@keyframes bottom-fade {
+    0%, 35%   { opacity: 0.55; }
+    55%, 68%  { opacity: 0; }
+    88%, 100% { opacity: 0.55; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .bottom-pic { animation: none; }
 }
 
 /* SOCIAL ICONS */
