@@ -399,12 +399,26 @@
    VIDEO PAGE PLAYERS (music.html) — local mp4s + YouTube.
    Start muted, PLAY/PAUSE button (YouTube videos: tapping the
    middle works too), seek slider, volume knob, no speed menu.
+   Sound on/off + volume are shared by all videos on the page, and
+   only one video plays at a time (starting one pauses the others).
    ========================================================== */
 (function () {
     var roots = document.querySelectorAll(".mplayer");
     if (!roots.length) return;
     var DEFAULT_VOL = 35;
     var ytRoots = [];
+    var all = [];                         // every wired player on the page
+    var shared = { muted: true, volume: DEFAULT_VOL };
+
+    // apply the shared sound settings to every player
+    function applySound() {
+        all.forEach(function (p) {
+            p.api.setVolume(shared.volume);
+            p.api.setMuted(shared.muted);
+            p.knob.value = shared.volume;
+            p.render();
+        });
+    }
 
     // wire buttons + knob to a small player "api"
     function wire(root, api) {
@@ -445,21 +459,34 @@
         }
         api.onChange(render);
 
+        // one song at a time: when this one starts, pause the others
+        api.onChange(function () {
+            if (api.isPaused()) return;
+            all.forEach(function (p) {
+                if (p.api !== api && !p.api.isPaused()) p.api.pause();
+            });
+        });
+
         playBtn.addEventListener("click", function () {
             if (api.isPaused()) api.play(); else api.pause();
             setTimeout(render, 50);
         });
         soundBtn.addEventListener("click", function () {
-            api.setMuted(!api.isMuted());
-            if (!api.isMuted() && +knob.value === 0) { knob.value = DEFAULT_VOL; api.setVolume(DEFAULT_VOL); }
-            render();
+            shared.muted = !shared.muted;
+            if (!shared.muted && shared.volume === 0) shared.volume = DEFAULT_VOL;
+            applySound();
         });
         knob.addEventListener("input", function () {
-            var v = +knob.value;
-            api.setVolume(v);
-            api.setMuted(v === 0);   // moving the knob up turns sound on
-            render();
+            shared.volume = +knob.value;
+            shared.muted = shared.volume === 0;   // moving the knob up turns sound on
+            applySound();
         });
+
+        // join the shared settings (YouTube players may join later)
+        all.push({ api: api, knob: knob, render: render });
+        api.setVolume(shared.volume);
+        api.setMuted(shared.muted);
+        knob.value = shared.volume;
         render();
     }
 
@@ -514,7 +541,7 @@
             },
             events: {
                 onReady: function () {
-                    player.mute();
+                    if (muted) player.mute(); else player.unMute();
                     player.setVolume(volume);
                     emit();
                 },
