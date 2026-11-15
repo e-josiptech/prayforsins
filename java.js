@@ -300,11 +300,20 @@
    SOUNDS
    - "click" (GTA menu): buttons / video, and 51% of link clicks
    - "menu"  (menu button press): live-show popup always, 49% of link clicks
+   - "hover" (Windows 7 menu tick): mouse moving onto photos, header,
+             links, icons, buttons — like browsing a game menu
    Links that open in the same tab wait a moment so the sound
    is heard before the page changes.
    ========================================================== */
 (function () {
-    var FILES = { click: "sounds/click.m4a", menu: "sounds/menu.m4a" };
+    var FILES = {
+        click: "sounds/click.m4a",
+        menu: "sounds/menu.m4a",
+        hover: "sounds/hover.m4a"
+    };
+    var HOVER_VOLUME = 0.12;       // quieter than clicks
+    var HOVERABLE = 'a[href], button, [role="link"], .main-video, h1, ' +
+        'h3.live, .photo-frame, .small-pic, .bottom-pic';
     var VOLUME = 0.18;             // soft, in the background
     var MENU_CHANCE = 0.49;        // links: chance of the "menu" sound
     var NAV_DELAY = { click: 220, menu: 400 };
@@ -331,22 +340,38 @@
         }
     });
 
-    function play(name) {
+    function play(name, volume) {
+        var vol = volume || VOLUME;
         if (ctx && buffers[name]) {
             if (ctx.state === "suspended") ctx.resume();
             var src = ctx.createBufferSource();
             var gain = ctx.createGain();
-            gain.gain.value = VOLUME;
+            gain.gain.value = vol;
             src.buffer = buffers[name];
             src.connect(gain).connect(ctx.destination);
             src.start(0);
         } else if (ctx) {
             ctx.resume();
         } else if (fallbacks[name]) {
+            fallbacks[name].volume = vol;
             fallbacks[name].currentTime = 0;
             fallbacks[name].play().catch(function () {});
         }
     }
+
+    // ---- hover: tick once when the mouse moves onto something new ----
+    // (mouse only; browsers allow sound only after the first click/tap/key)
+    var hovered = null, lastHoverAt = 0;
+    document.addEventListener("pointerover", function (e) {
+        if (e.pointerType && e.pointerType !== "mouse") return;
+        var el = e.target.closest && e.target.closest(HOVERABLE);
+        if (el === hovered) return;
+        hovered = el;
+        if (el && Date.now() - lastHoverAt > 60) {
+            lastHoverAt = Date.now();
+            play("hover", HOVER_VOLUME);
+        }
+    });
 
     // ---- clicks ----
     document.addEventListener("click", function (e) {
