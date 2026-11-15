@@ -232,6 +232,7 @@
     var GAP = 40;          // space between video and bar
     var MIN_W = 300;       // narrower than this -> bottom-of-screen bar
     var MAX_W = 520;
+    var V_POS = 0.3;       // bar sits at 30% of the video's height (0.5 = middle)
 
     setTimeout(function () {
         var pop = document.createElement("div");
@@ -252,7 +253,7 @@
                 pop.classList.add("docked");
                 pop.style.width = width + "px";
                 pop.style.left = (left + window.scrollX) + "px";
-                pop.style.top = (r.top + window.scrollY + r.height / 2 - pop.offsetHeight / 2) + "px";
+                pop.style.top = (r.top + window.scrollY + r.height * V_POS - pop.offsetHeight / 2) + "px";
             } else {
                 pop.classList.remove("docked");
                 pop.style.width = pop.style.left = pop.style.top = "";
