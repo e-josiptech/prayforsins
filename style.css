@@ -1,0 +1,256 @@
+/* GENERAL */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #000000;
+    color: white;
+    font-family: "Courier New", monospace;
+    text-align: center;
+    border-top: 3px solid #555555;
+}
+
+
+/* MAIN WEBSITE */
+
+.website {
+    width: 100%;
+    min-height: 100vh;
+    padding: 45px 20px 80px;
+}
+
+
+/* TITLE */
+
+h1 {
+    font-family: calibri, sans-serif;
+    font-size: 42px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-bottom: 38px;
+}
+
+h1 a {
+    color: #003cff;
+    text-decoration: none;
+}
+
+h1 a:hover {
+    color: #ffffff;
+}
+
+
+/* SUBTITLE */
+
+.subtitle {
+    font-family: "Courier New", serif;
+    color: #870551;
+    font-size: 17px;
+    line-height: 1.7;
+    max-width: 820px;
+    margin: 0 auto 55px;
+    letter-spacing: 0.4px;
+
+    text-shadow:
+        1px 0px 0px #870551,
+        -1px 0px 0px #870551,
+        0px 1px 0px #870551;
+
+    filter: blur(0.3px);
+    -webkit-font-smoothing: none;
+    image-rendering: pixelated;
+}
+
+
+/* PHOTO FRAME */
+
+.photo-frame {
+    width: 860px;
+    max-width: 95%;
+    margin: 0 auto 50px;
+    border: 9px solid #880927;
+    line-height: 0;
+}
+
+.photo-frame img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+
+/* CROSSES + LIVE */
+
+h2.crosses {
+    font-family: calibri, sans-serif;
+    font-size: 26px;
+    font-weight: bold;
+    letter-spacing: 5px;
+    margin-bottom: 14px;
+    color: #ffffff;
+}
+
+h2.live {
+    font-family: calibri, sans-serif;
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 55px;
+    color: #ffffff;
+}
+
+
+/* CLICK CONTAINER */
+
+.click-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 10px auto 0;
+    padding-bottom: 40px;
+}
+
+
+/* CLICKABLE AREA */
+
+.heart-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+
+/* CLICK TEXT */
+
+.heart-link span {
+    color: white;
+    font-family: "Courier New", monospace;
+    font-size: 15px;
+    margin-bottom: 12px;
+    letter-spacing: 3px;
+}
+
+
+/* CROSS */
+
+.cross {
+    display: inline-block;
+    font-size: 150px;
+    line-height: 1;
+    color: white;
+    text-shadow: 0 0 3px rgba(255,255,255,0.3);
+    transform-origin: center center;
+}
+
+
+/* HOVER */
+
+.heart-link:hover .cross {
+    color: #ff2222;
+    text-shadow:
+        0 0 4px rgba(255,0,0,0.5),
+        0 0 9px rgba(255,0,0,0.3);
+    animation: retro-spin 2.5s steps(8, end) infinite;
+}
+
+
+/* ANIMATION */
+
+@keyframes retro-spin {
+    from {
+        transform: rotate(0deg) scale(1);
+    }
+    to {
+        transform: rotate(360deg) scale(1.12);
+    }
+}
+
+
+/* ========== VIDEO PAGE ========== */
+
+.music-page {
+    padding: 70px 20px;
+}
+
+.music-page h1 {
+    margin-bottom: 50px;
+}
+.video-wrapper {
+    max-width: 680px;        /* not full screen */
+    width: 90%;
+    margin: 0 auto 45px;
+}
+
+.video-wrapper video {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 7px solid #880927;
+    background: #111;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 15px;
+    color: #003cff;
+    text-decoration: none;
+    font-family: "Courier New", monospace;
+    font-size: 16px;
+    letter-spacing: 2px;
+}
+
+.back-link:hover {
+    color: white;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+    .website {
+        padding: 30px 14px 60px;
+    }
+
+    h1 {
+        font-size: 26px;
+        margin-bottom: 28px;
+    }
+
+    .subtitle {
+        font-size: 14px;
+        line-height: 1.65;
+        margin-bottom: 40px;
+    }
+
+    .photo-frame {
+        max-width: 100%;
+        border-width: 6px;
+        margin-bottom: 40px;
+    }
+
+    h2.crosses {
+        font-size: 18px;
+        letter-spacing: 3px;
+    }
+
+    h2.live {
+        font-size: 18px;
+        margin-bottom: 45px;
+    }
+
+    .cross {
+        font-size: 110px;
+    }
+
+    .video-wrapper {
+        width: 95%;
+    }
+}
