@@ -294,7 +294,7 @@
 /* ==========================================================
    SOUNDS
    - "click" (GTA menu): switched OFF for now (set CLICK_SOUND_ON = true)
-   - "menu"  (menu button press): live-show popup always, 49% of link clicks
+   - "menu"  (menu button press): every click on anything clickable
    - "hover" (Windows 7 menu tick): mouse moving onto photos, header,
              links, icons, buttons — like browsing a game menu
    Links that open in the same tab wait a moment so the sound
@@ -307,11 +307,10 @@
         hover: "sounds/hover.m4a"
     };
     if (CLICK_SOUND_ON) FILES.click = "sounds/click.m4a";
-    var HOVER_VOLUME = 0.12;       // quieter than clicks
+    var HOVER_VOLUME = 0.2;        // menu "tick" when moving onto things
     var HOVERABLE = 'a[href], button, [role="link"], .main-video, h1, ' +
         'h3.live, .photo-frame, .small-pic, .bottom-pic';
-    var VOLUME = 0.18;             // soft, in the background
-    var MENU_CHANCE = 0.49;        // links: chance of the "menu" sound
+    var VOLUME = 0.1;              // click sound — soft, in the background
     var NAV_DELAY = { click: 220, menu: 400 };
     var CLICKABLE = 'a[href], button, [role="link"]';
 
@@ -374,10 +373,7 @@
         var el = e.target.closest && e.target.closest(CLICKABLE);
         if (!el) return;
 
-        var sound;
-        if (el.classList.contains("live-pop")) sound = "menu";
-        else if (el.tagName === "A") sound = Math.random() < MENU_CHANCE ? "menu" : "click";
-        else sound = "click";
+        var sound = "menu";            // always the menu-button sound
 
         if (sound !== "click" || CLICK_SOUND_ON) play(sound);
 
