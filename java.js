@@ -5,14 +5,14 @@
    - choppy, low-fps, old-cartoon "boiling" motion (see style.css)
    - timing is random every time, so it feels organic
    - clicking a big 7 (not the words) opens adventisti.hr
-   - big 7 is warped + blurred for a low-quality look (#seven-warp)
+   - big 7 is lightly warped + blurred for a low-quality look (#seven-warp)
    ========================================================== */
 (function () {
     var LINK = "https://adventisti.hr/";
     var COLORS = ["#ffffff", "#c40000"];
     // all timings are [min, max] in ms — a new random value every time
     var BIG_LIFE = [3000, 5600];   // how long a big 7 stays (incl. in/out)
-    var BIG_GAP = [2000, 8000];    // pause before the next 7 on the other side
+    var BIG_GAP = [1000, 3000];    // pause before the next 7 on the other side
     var WORD_LIFE = [3000, 5600];  // how long a "seven" stays
     var WORD_GAP = [3000, 10000];  // pause between batches of "seven"s
     var OUT_MS = 500;         // matches the CSS exit animation
@@ -31,7 +31,7 @@
     svg.innerHTML =
         '<filter id="seven-warp" x="-20%" y="-20%" width="140%" height="140%">' +
         '<feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>' +
-        '<feDisplacementMap in="SourceGraphic" in2="n" scale="38" xChannelSelector="R" yChannelSelector="G"/>' +
+        '<feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G"/>' +
         '</filter>';
     layer.appendChild(svg);
 

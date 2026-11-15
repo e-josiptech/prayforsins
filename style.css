@@ -203,6 +203,18 @@ h2.live {
     background: #111;
 }
 
+/* BOTTOM PICTURE — B&W, low quality, faded into the page */
+
+.bottom-pic {
+    display: block;
+    width: 420px;
+    max-width: 85%;
+    height: auto;
+    margin: 30px auto 0;
+    filter: grayscale(1) contrast(1.15) blur(0.6px);
+    opacity: 0.55;
+}
+
 /* SOCIAL ICONS */
 
 .socials {
@@ -403,8 +415,8 @@ h2.live {
 /* low-quality, distorted 7: stretched, warped, blurry, a bit faded */
 .seven.big .warp {
     display: inline-block;
-    transform: scale(1.18, 0.9);
-    filter: url(#seven-warp) blur(2px) contrast(1.4);
+    transform: scale(1.05, 0.97);
+    filter: url(#seven-warp) blur(1.6px) contrast(1.4);
     opacity: 0.8;
 }
 
