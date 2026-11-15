@@ -285,7 +285,33 @@ h2.live {
 @media (max-width: 600px) {
 
     .website {
-        padding: 95px 14px 60px;    /* room for social icons + drips */
+        padding: 66px 14px 60px;    /* room for social icons + drips */
+    }
+
+    /* social icons: same corner look as desktop, scaled for phones */
+    .socials {
+        top: 10px;
+        right: 10px;
+        gap: 8px;
+    }
+
+    .socials a {
+        width: 30px;
+        height: 30px;
+    }
+
+    .socials img {
+        width: 18px;
+        height: 18px;
+    }
+
+    .socials a::after {
+        width: 32px;
+        height: 53px;
+    }
+
+    .socials a:nth-child(3)::after {
+        height: 45px;
     }
 
     h1 {
