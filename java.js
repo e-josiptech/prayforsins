@@ -177,6 +177,7 @@
     var soundBtn = document.querySelector('.player-btn[data-act="sound"]');
 
     video.volume = VOLUME;
+    video.muted = true;         // always start muted — SOUND ON turns it on
 
     function render() {
         playBtn.textContent = video.paused ? "▶ PLAY" : "❚❚ PAUSE";
@@ -186,20 +187,14 @@
     function toggle() {
         if (video.paused) {
             if (video.ended) { lastTime = 0; video.currentTime = 0; }  // replay from start
-            video.muted = false;
-            video.volume = VOLUME;
-            video.play().catch(function () {});
+            video.play().catch(function () {});   // keeps the current mute state
         } else {
             video.pause();
         }
     }
 
-    // try to autoplay with sound; browsers often block that,
-    // so fall back to muted autoplay (SOUND ON button turns it on)
-    video.play().catch(function () {
-        video.muted = true;
-        video.play().catch(function () {}).then(render);
-    });
+    // autoplay muted
+    video.play().catch(function () {}).then(render);
 
     playBtn.addEventListener("click", toggle);
     video.addEventListener("click", toggle);
@@ -298,7 +293,7 @@
 
 /* ==========================================================
    SOUNDS
-   - "click" (GTA menu): buttons / video, and 51% of link clicks
+   - "click" (GTA menu): switched OFF for now (set CLICK_SOUND_ON = true)
    - "menu"  (menu button press): live-show popup always, 49% of link clicks
    - "hover" (Windows 7 menu tick): mouse moving onto photos, header,
              links, icons, buttons — like browsing a game menu
@@ -306,11 +301,12 @@
    is heard before the page changes.
    ========================================================== */
 (function () {
+    var CLICK_SOUND_ON = false;    // GTA click — off for now (file kept in sounds/)
     var FILES = {
-        click: "sounds/click.m4a",
         menu: "sounds/menu.m4a",
         hover: "sounds/hover.m4a"
     };
+    if (CLICK_SOUND_ON) FILES.click = "sounds/click.m4a";
     var HOVER_VOLUME = 0.12;       // quieter than clicks
     var HOVERABLE = 'a[href], button, [role="link"], .main-video, h1, ' +
         'h3.live, .photo-frame, .small-pic, .bottom-pic';
@@ -383,7 +379,7 @@
         else if (el.tagName === "A") sound = Math.random() < MENU_CHANCE ? "menu" : "click";
         else sound = "click";
 
-        play(sound);
+        if (sound !== "click" || CLICK_SOUND_ON) play(sound);
 
         // same-tab link: hold the navigation for a moment
         if (el.tagName === "A" && !e.defaultPrevented &&
