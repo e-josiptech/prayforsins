@@ -217,3 +217,47 @@
     });
     render();
 })();
+
+
+/* ==========================================================
+   LIVE SHOW POPUP — shows 2s after the home page loads,
+   once per visit/refresh. Click = jump to the live section.
+   ========================================================== */
+(function () {
+    var live = document.getElementById("live");
+    if (!live) return;
+
+    setTimeout(function () {
+        var pop = document.createElement("div");
+        pop.className = "live-pop";
+        pop.setAttribute("role", "link");
+        pop.tabIndex = 0;
+        pop.innerHTML =
+            '<span class="live-pop-cross" aria-hidden="true">☦</span>' +
+            '<span class="live-pop-text">you want to change your life? check where jo777 is performing.</span>' +
+            '<button type="button" class="live-pop-close" aria-label="Close">×</button>';
+        document.body.appendChild(pop);
+
+        function close() {
+            pop.classList.add("out");
+            setTimeout(function () { pop.remove(); }, 500);
+        }
+
+        function go() {
+            close();
+            live.scrollIntoView({ behavior: "smooth", block: "center" });
+            live.classList.remove("flash");
+            void live.offsetWidth;          // restart the blink
+            live.classList.add("flash");
+        }
+
+        pop.addEventListener("click", function (e) {
+            if (e.target.closest(".live-pop-close")) { close(); return; }
+            go();
+        });
+        pop.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") go();
+            if (e.key === "Escape") close();
+        });
+    }, 2000);
+})();

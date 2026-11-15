@@ -276,6 +276,110 @@ h2.live {
     .bottom-pic { animation: none; }
 }
 
+/* LIVE SHOW POPUP (java.js) — long thin retro bar */
+
+.live-pop {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: min(640px, 92vw);
+    padding: 7px 12px;
+    background: #000000;
+    border: 2px solid #880927;
+    box-shadow: 4px 4px 0 #3a0010;
+    color: #ffffff;
+    cursor: pointer;
+    transform: translateX(-50%);
+    /* pops in on choppy frames, then boils like the 7s */
+    animation:
+        pop-in 0.5s steps(4, end) both,
+        pop-boil 0.375s steps(1, end) 0.5s infinite;
+}
+
+.live-pop.out {
+    animation: pop-out 0.5s steps(4, end) both;
+}
+
+.live-pop-cross {
+    flex: none;
+    font-size: 20px;
+    line-height: 1;
+    color: #c40000;
+}
+
+/* low quality, slightly warped text */
+.live-pop-text {
+    flex: 1;
+    font-family: "Courier New", monospace;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-align: left;
+    filter: url(#seven-warp) blur(0.7px) contrast(1.6);
+}
+
+.live-pop-close {
+    flex: none;
+    background: none;
+    border: none;
+    color: #888888;
+    font-family: "Courier New", monospace;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 0 2px;
+}
+
+.live-pop-close:hover {
+    color: #ff2222;
+}
+
+@keyframes pop-in {
+    0%   { opacity: 0; transform: translateX(-50%) scaleX(0.2); }
+    100% { opacity: 1; transform: translateX(-50%) scaleX(1); }
+}
+
+@keyframes pop-out {
+    0%   { opacity: 1; transform: translateX(-50%) scaleX(1); }
+    100% { opacity: 0; transform: translateX(-50%) scaleX(0.2); }
+}
+
+@keyframes pop-boil {
+    0%      { transform: translateX(-50%) rotate(0deg); }
+    33.33%  { transform: translateX(calc(-50% + 1px)) rotate(0.4deg); }
+    66.66%  { transform: translateX(calc(-50% - 1px)) rotate(-0.3deg); }
+}
+
+/* live section blinks when you land on it from the popup */
+h3.live.flash {
+    animation: live-flash 0.25s steps(1, end) 6;
+}
+
+@keyframes live-flash {
+    0%  { color: #ff2222; }
+    50% { color: #ffffff; }
+}
+
+@media (max-width: 600px) {
+    .live-pop {
+        bottom: 16px;
+    }
+
+    .live-pop-text {
+        font-size: 11px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .live-pop,
+    .live-pop.out {
+        animation: none;
+    }
+}
+
 /* SOCIAL ICONS */
 
 .socials {
