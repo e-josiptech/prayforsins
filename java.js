@@ -256,7 +256,7 @@
         pop.tabIndex = 0;
         pop.innerHTML =
             '<span class="live-pop-cross" aria-hidden="true">☦</span>' +
-            '<span class="live-pop-text">want to change your life? find out where jo777 is performing</span>';
+            '<span class="live-pop-text">want to change your life? find out where jo777 is performing!</span>';
         document.body.appendChild(pop);
 
         // sit in the empty space right of the video when there's room
