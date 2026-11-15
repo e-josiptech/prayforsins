@@ -4,8 +4,8 @@
    - small "seven" words: 2–3 on each side, at random intervals
    - choppy, low-fps, old-cartoon "boiling" motion (see style.css)
    - timing is random every time, so it feels organic
-   - only every 3rd big 7 is clickable (opens adventisti.hr); words never
-   - left side: 7 is mirrored (faces the middle) 3 times, then the 4th is normal
+   - every 2nd big 7 on EACH side is clickable (opens adventisti.hr); words never
+   - left side: 3 normal 7s, then the 4th is mirrored (faces the middle)
    - big 7 is lightly warped + blurred for a low-quality look (#seven-warp)
    ========================================================== */
 (function () {
@@ -90,20 +90,17 @@
     // Big 7: only one on screen; after it's gone, wait a random pause,
     // then the next one appears on the other side.
     var bigSide = Math.random() < 0.5 ? "left" : "right";
-    var bigCount = 0;      // all big 7s shown -> every 3rd is a link
-    var leftCount = 0;     // left-side 7s -> 1,2,3 mirrored, 4th normal
+    // counted per side (sides alternate, so a single counter would
+    // always put the link on the same side)
+    var count = { left: 0, right: 0 };   // every 2nd on each side -> link
+                                         // left: 1,2,3 normal, 4th mirrored
     function bigSeven() {
         var life = randMs(BIG_LIFE);
         if (!document.hidden) {
-            bigCount++;
-            var mirror = false;
-            if (bigSide === "left") {
-                leftCount++;
-                mirror = leftCount % 4 !== 0;
-            }
+            var n = ++count[bigSide];
             spawn("7", "big", bigSide, life, {
-                link: bigCount % 3 === 0,
-                mirror: mirror
+                link: n % 2 === 0,
+                mirror: bigSide === "left" && n % 4 === 0
             });
             bigSide = bigSide === "left" ? "right" : "left";
         }
