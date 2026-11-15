@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JO777</title>
+    <script>
+      // show a clean "jo777.red/" in the address bar instead of /index.html
+      if (/\/index\.html$/.test(location.pathname)) history.replaceState(null, "", "/" + location.search + location.hash);
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap" rel="stylesheet">
