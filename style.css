@@ -398,12 +398,22 @@ h2.live {
 
 .seven.big {
     font-size: min(65vh, 110vw);
-    text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.6);
 }
 
+/* low-quality, distorted 7: stretched, warped, blurry, a bit faded */
+.seven.big .warp {
+    display: inline-block;
+    transform: scale(1.18, 0.9);
+    filter: url(#seven-warp) blur(2px) contrast(1.4);
+    opacity: 0.8;
+}
+
+/* words are just decoration, not clickable */
 .seven.word {
-    font-size: 18px;
+    font-size: 22px;
     letter-spacing: 1px;
+    pointer-events: none;
+    cursor: default;
 }
 
 .seven.out {
@@ -429,7 +439,7 @@ h2.live {
 
 @media (max-width: 600px) {
     .seven.word {
-        font-size: 14px;
+        font-size: 17px;
     }
 }
 

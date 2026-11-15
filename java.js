@@ -4,15 +4,16 @@
    - small "seven" words: 2–3 on each side, at random intervals
    - choppy, low-fps, old-cartoon "boiling" motion (see style.css)
    - timing is random every time, so it feels organic
-   - clicking a 7 or "seven" opens adventisti.hr
+   - clicking a big 7 (not the words) opens adventisti.hr
+   - big 7 is warped + blurred for a low-quality look (#seven-warp)
    ========================================================== */
 (function () {
     var LINK = "https://adventisti.hr/";
     var COLORS = ["#ffffff", "#c40000"];
     // all timings are [min, max] in ms — a new random value every time
-    var BIG_LIFE = [6000, 9000];   // how long a big 7 stays (incl. in/out)
+    var BIG_LIFE = [3000, 5600];   // how long a big 7 stays (incl. in/out)
     var BIG_GAP = [2000, 8000];    // pause before the next 7 on the other side
-    var WORD_LIFE = [4500, 7000];  // how long a "seven" stays
+    var WORD_LIFE = [3000, 5600];  // how long a "seven" stays
     var WORD_GAP = [3000, 10000];  // pause between batches of "seven"s
     var OUT_MS = 500;         // matches the CSS exit animation
 
@@ -21,18 +22,40 @@
     layer.setAttribute("aria-hidden", "true");
     document.body.insertBefore(layer, document.body.firstChild);
 
+    // SVG filter: wobbly warp + smear, used by .seven.big .warp in style.css
+    var svgNS = "http://www.w3.org/2000/svg";
+    var svg = document.createElementNS(svgNS, "svg");
+    svg.setAttribute("width", "0");
+    svg.setAttribute("height", "0");
+    svg.style.position = "absolute";
+    svg.innerHTML =
+        '<filter id="seven-warp" x="-20%" y="-20%" width="140%" height="140%">' +
+        '<feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>' +
+        '<feDisplacementMap in="SourceGraphic" in2="n" scale="38" xChannelSelector="R" yChannelSelector="G"/>' +
+        '</filter>';
+    layer.appendChild(svg);
+
     function rand(min, max) { return min + Math.random() * (max - min); }
     function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
-    // Make a clickable glyph, measure it, then drop it on one side.
+    // Make a glyph (big 7 = link, words = plain text), measure, place on a side.
     function spawn(text, cls, side, lifeMs) {
-        var el = document.createElement("a");
-        el.href = LINK;
-        el.target = "_blank";
-        el.rel = "noopener";
-        el.tabIndex = -1;
+        var el;
+        if (cls === "big") {
+            el = document.createElement("a");
+            el.href = LINK;
+            el.target = "_blank";
+            el.rel = "noopener";
+            el.tabIndex = -1;
+            var warp = document.createElement("span");
+            warp.className = "warp";
+            warp.textContent = text;
+            el.appendChild(warp);
+        } else {
+            el = document.createElement("span");
+            el.textContent = text;
+        }
         el.className = "seven " + cls;
-        el.textContent = text;
         el.style.color = pick(COLORS);
         el.style.visibility = "hidden";
         layer.appendChild(el);
