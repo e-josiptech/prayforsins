@@ -397,8 +397,8 @@
 
 /* ==========================================================
    VIDEO PAGE PLAYERS (music.html) — local mp4s + YouTube.
-   Same rules as the home video: start muted, PLAY/PAUSE only
-   via the button, no seeking, no speed menu. Plus a volume knob.
+   Start muted, PLAY/PAUSE button (YouTube videos: tapping the
+   middle works too), seek slider, volume knob, no speed menu.
    ========================================================== */
 (function () {
     var roots = document.querySelectorAll(".mplayer");
@@ -410,7 +410,34 @@
     function wire(root, api) {
         var playBtn = root.querySelector('[data-act="play"]');
         var soundBtn = root.querySelector('[data-act="sound"]');
-        var knob = root.querySelector(".vol-knob");
+        var knob = root.querySelector(".vol-knob:not(.seek-knob)");
+        var seek = root.querySelector(".seek-knob");
+        var timeEl = root.querySelector(".seek-time");
+        var dragging = false;
+
+        function fmt(t) {
+            t = Math.max(0, Math.floor(t || 0));
+            return Math.floor(t / 60) + ":" + ("0" + (t % 60)).slice(-2);
+        }
+        function updateSeek() {
+            var d = api.duration(), t = api.currentTime();
+            if (!dragging && d > 0) seek.value = Math.round(t / d * 1000);
+            timeEl.textContent = fmt(t) + " / " + fmt(d);
+        }
+        setInterval(updateSeek, 250);
+        seek.addEventListener("input", function () {
+            dragging = true;
+            var d = api.duration();
+            if (d > 0) {
+                api.seek(seek.value / 1000 * d);
+                timeEl.textContent = fmt(seek.value / 1000 * d) + " / " + fmt(d);
+            }
+        });
+        seek.addEventListener("change", function () { dragging = false; });
+
+        // YouTube only: tap the middle of the video to play / pause
+        var shield = root.querySelector(".yt-shield");
+        if (shield) shield.addEventListener("click", function () { playBtn.click(); });
 
         function render() {
             playBtn.textContent = api.isPaused() ? "▶ PLAY" : "❚❚ PAUSE";
@@ -438,25 +465,19 @@
 
     // ---- local mp4 videos ----
     function localApi(video) {
-        var lastTime = 0;
         video.muted = true;
         video.volume = DEFAULT_VOL / 100;
-        video.addEventListener("timeupdate", function () {
-            if (!video.seeking) lastTime = video.currentTime;
-        });
-        video.addEventListener("seeking", function () {      // no skipping
-            if (Math.abs(video.currentTime - lastTime) > 0.5 && !video.ended) {
-                video.currentTime = lastTime;
-            }
-        });
         video.addEventListener("ratechange", function () {   // no speed change
             if (video.playbackRate !== 1) video.playbackRate = 1;
         });
         return {
             play: function () {
-                if (video.ended) { lastTime = 0; video.currentTime = 0; }
+                if (video.ended) video.currentTime = 0;
                 video.play().catch(function () {});
             },
+            duration: function () { return isFinite(video.duration) ? video.duration : 0; },
+            currentTime: function () { return video.currentTime; },
+            seek: function (t) { video.currentTime = t; },
             pause: function () { video.pause(); },
             isPaused: function () { return video.paused; },
             isMuted: function () { return video.muted; },
@@ -502,6 +523,9 @@
         });
         return {
             play: function () { if (player.playVideo) player.playVideo(); },
+            duration: function () { return player.getDuration ? player.getDuration() : 0; },
+            currentTime: function () { return player.getCurrentTime ? player.getCurrentTime() : 0; },
+            seek: function (t) { if (player.seekTo) player.seekTo(t, true); },
             pause: function () { if (player.pauseVideo) player.pauseVideo(); },
             // 1 = playing, 3 = buffering
             isPaused: function () { return state !== 1 && state !== 3; },
