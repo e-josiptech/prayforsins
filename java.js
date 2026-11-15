@@ -4,7 +4,8 @@
    - small "seven" words: 2–3 on each side, at random intervals
    - choppy, low-fps, old-cartoon "boiling" motion (see style.css)
    - timing is random every time, so it feels organic
-   - clicking a big 7 (not the words) opens adventisti.hr
+   - only every 3rd big 7 is clickable (opens adventisti.hr); words never
+   - left side: 7 is mirrored (faces the middle) 3 times, then the 4th is normal
    - big 7 is lightly warped + blurred for a low-quality look (#seven-warp)
    ========================================================== */
 (function () {
@@ -37,24 +38,30 @@
     function rand(min, max) { return min + Math.random() * (max - min); }
     function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
-    // Make a glyph (big 7 = link, words = plain text), measure, place on a side.
-    function spawn(text, cls, side, lifeMs) {
+    // Make a glyph, measure it, place it on a side.
+    // opts.link: big 7 opens LINK; opts.mirror: big 7 flipped horizontally
+    function spawn(text, cls, side, lifeMs, opts) {
+        opts = opts || {};
         var el;
         if (cls === "big") {
-            el = document.createElement("a");
-            el.href = LINK;
-            el.target = "_blank";
-            el.rel = "noopener";
-            el.tabIndex = -1;
+            if (opts.link) {
+                el = document.createElement("a");
+                el.href = LINK;
+                el.target = "_blank";
+                el.rel = "noopener";
+                el.tabIndex = -1;
+            } else {
+                el = document.createElement("span");
+            }
             var warp = document.createElement("span");
-            warp.className = "warp";
+            warp.className = opts.mirror ? "warp mirror" : "warp";
             warp.textContent = text;
             el.appendChild(warp);
         } else {
             el = document.createElement("span");
             el.textContent = text;
         }
-        el.className = "seven " + cls;
+        el.className = "seven " + cls + (cls === "big" && !opts.link ? " no-link" : "");
         // white or red, picked at random every time (colors in style.css)
         el.classList.add(Math.random() < 0.5 ? "c-white" : "c-red");
         el.style.visibility = "hidden";
@@ -83,10 +90,21 @@
     // Big 7: only one on screen; after it's gone, wait a random pause,
     // then the next one appears on the other side.
     var bigSide = Math.random() < 0.5 ? "left" : "right";
+    var bigCount = 0;      // all big 7s shown -> every 3rd is a link
+    var leftCount = 0;     // left-side 7s -> 1,2,3 mirrored, 4th normal
     function bigSeven() {
         var life = randMs(BIG_LIFE);
         if (!document.hidden) {
-            spawn("7", "big", bigSide, life);
+            bigCount++;
+            var mirror = false;
+            if (bigSide === "left") {
+                leftCount++;
+                mirror = leftCount % 4 !== 0;
+            }
+            spawn("7", "big", bigSide, life, {
+                link: bigCount % 3 === 0,
+                mirror: mirror
+            });
             bigSide = bigSide === "left" ? "right" : "left";
         }
         setTimeout(bigSeven, life + randMs(BIG_GAP));

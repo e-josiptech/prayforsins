@@ -595,6 +595,17 @@ h3.live.flash {
     opacity: 0.8;
 }
 
+/* left-side 7 flipped to face the middle of the page */
+.seven.big .warp.mirror {
+    transform: scale(-1.05, 0.97);
+}
+
+/* 7s that are not the "every 3rd" link: not clickable */
+.seven.big.no-link {
+    pointer-events: none;
+    cursor: default;
+}
+
 /* 7 / seven colors — java.js picks one at random for each */
 .seven.c-white { color: #ffffff; }
 .seven.c-red   { color: #c40000; }
