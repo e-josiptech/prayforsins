@@ -225,7 +225,7 @@ h2.live {
     width: 20px;
     height: 20px;
     position: relative;
-    top: 3px;                   /* sit below the blood band */
+    top: 1px;
 }
 
 /* blood dripping from the top edge */
@@ -236,7 +236,7 @@ h2.live {
     left: -1px;
     width: 36px;
     height: 59px;
-    background: url("images/icons/blood.svg") top left / 100% auto no-repeat;
+    background: url("images/icons/blood2.svg") top left / 100% auto no-repeat;
     pointer-events: none;
 }
 
