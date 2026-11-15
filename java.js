@@ -393,3 +393,138 @@
         }
     });
 })();
+
+
+/* ==========================================================
+   VIDEO PAGE PLAYERS (music.html) — local mp4s + YouTube.
+   Same rules as the home video: start muted, PLAY/PAUSE only
+   via the button, no seeking, no speed menu. Plus a volume knob.
+   ========================================================== */
+(function () {
+    var roots = document.querySelectorAll(".mplayer");
+    if (!roots.length) return;
+    var DEFAULT_VOL = 35;
+    var ytRoots = [];
+
+    // wire buttons + knob to a small player "api"
+    function wire(root, api) {
+        var playBtn = root.querySelector('[data-act="play"]');
+        var soundBtn = root.querySelector('[data-act="sound"]');
+        var knob = root.querySelector(".vol-knob");
+
+        function render() {
+            playBtn.textContent = api.isPaused() ? "▶ PLAY" : "❚❚ PAUSE";
+            soundBtn.textContent = api.isMuted() ? "нет звука" : "звук включён";
+        }
+        api.onChange(render);
+
+        playBtn.addEventListener("click", function () {
+            if (api.isPaused()) api.play(); else api.pause();
+            setTimeout(render, 50);
+        });
+        soundBtn.addEventListener("click", function () {
+            api.setMuted(!api.isMuted());
+            if (!api.isMuted() && +knob.value === 0) { knob.value = DEFAULT_VOL; api.setVolume(DEFAULT_VOL); }
+            render();
+        });
+        knob.addEventListener("input", function () {
+            var v = +knob.value;
+            api.setVolume(v);
+            api.setMuted(v === 0);   // moving the knob up turns sound on
+            render();
+        });
+        render();
+    }
+
+    // ---- local mp4 videos ----
+    function localApi(video) {
+        var lastTime = 0;
+        video.muted = true;
+        video.volume = DEFAULT_VOL / 100;
+        video.addEventListener("timeupdate", function () {
+            if (!video.seeking) lastTime = video.currentTime;
+        });
+        video.addEventListener("seeking", function () {      // no skipping
+            if (Math.abs(video.currentTime - lastTime) > 0.5 && !video.ended) {
+                video.currentTime = lastTime;
+            }
+        });
+        video.addEventListener("ratechange", function () {   // no speed change
+            if (video.playbackRate !== 1) video.playbackRate = 1;
+        });
+        return {
+            play: function () {
+                if (video.ended) { lastTime = 0; video.currentTime = 0; }
+                video.play().catch(function () {});
+            },
+            pause: function () { video.pause(); },
+            isPaused: function () { return video.paused; },
+            isMuted: function () { return video.muted; },
+            setMuted: function (m) { video.muted = m; },
+            setVolume: function (v) { video.volume = v / 100; },
+            onChange: function (fn) {
+                ["play", "pause", "ended", "volumechange"].forEach(function (e) {
+                    video.addEventListener(e, fn);
+                });
+            }
+        };
+    }
+
+    roots.forEach(function (root) {
+        if (root.getAttribute("data-kind") === "youtube") { ytRoots.push(root); return; }
+        var video = root.querySelector("video");
+        wire(root, localApi(video));
+        if (video.autoplay) video.play().catch(function () {});
+    });
+
+    // ---- YouTube videos (official IFrame API, no YouTube controls) ----
+    if (!ytRoots.length) return;
+
+    function ytApi(root) {
+        var player = null, state = -1, muted = true, volume = DEFAULT_VOL;
+        var listeners = [];
+        function emit() { listeners.forEach(function (fn) { fn(); }); }
+        player = new YT.Player(root.querySelector(".yt-frame"), {
+            host: "https://www.youtube-nocookie.com",
+            videoId: root.getAttribute("data-yt"),
+            playerVars: {
+                controls: 0, disablekb: 1, fs: 0, iv_load_policy: 3,
+                modestbranding: 1, playsinline: 1, rel: 0
+            },
+            events: {
+                onReady: function () {
+                    player.mute();
+                    player.setVolume(volume);
+                    emit();
+                },
+                onStateChange: function (e) { state = e.data; emit(); }
+            }
+        });
+        return {
+            play: function () { if (player.playVideo) player.playVideo(); },
+            pause: function () { if (player.pauseVideo) player.pauseVideo(); },
+            // 1 = playing, 3 = buffering
+            isPaused: function () { return state !== 1 && state !== 3; },
+            isMuted: function () { return muted; },
+            setMuted: function (m) {
+                muted = m;
+                if (!player.mute) return;
+                if (m) player.mute(); else player.unMute();
+            },
+            setVolume: function (v) {
+                volume = v;
+                if (player.setVolume) player.setVolume(v);
+            },
+            onChange: function (fn) { listeners.push(fn); }
+        };
+    }
+
+    var prevReady = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = function () {
+        if (prevReady) prevReady();
+        ytRoots.forEach(function (root) { wire(root, ytApi(root)); });
+    };
+    var tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(tag);
+})();

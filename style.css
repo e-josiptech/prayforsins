@@ -224,6 +224,130 @@ h2.live {
     background: #111;
 }
 
+/* VIDEO PAGE PLAYERS (music.html) — PLAY + volume knob + sound */
+
+.mplayer {
+    margin-bottom: 45px;
+}
+
+.mplayer .mvideo {
+    cursor: default;
+}
+
+/* YouTube box: same red frame as the other videos, 16:9 */
+.yt-box {
+    aspect-ratio: 16 / 9;
+    border: 7px solid #880927;
+    background: #111;
+}
+
+.yt-frame,
+.yt-box iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* invisible layer over YouTube so clicks can't pause/skip/open it */
+.yt-shield {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+.yt-box .player-controls {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+}
+
+/* "youtube" label above YouTube videos — low quality, warped */
+.yt-label {
+    margin: 0 0 10px;
+    color: #ffffff;
+    font-family: "Courier New", monospace;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 4px;
+    filter: url(#seven-warp) blur(0.8px) contrast(1.6);
+}
+
+.player-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* retro volume knob (slider) */
+.vol {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    pointer-events: auto;
+    color: #ffffff;
+    font-family: "Courier New", monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+
+.vol-knob {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 90px;
+    height: 14px;
+    background: transparent;
+    margin: 0;
+}
+
+.vol-knob::-webkit-slider-runnable-track {
+    height: 2px;
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.vol-knob::-moz-range-track {
+    height: 2px;
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.vol-knob::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 8px;
+    height: 14px;
+    margin-top: -6px;
+    background: #ffffff;
+    border: 1px solid #000000;
+    border-radius: 0;
+}
+
+.vol-knob::-moz-range-thumb {
+    width: 8px;
+    height: 14px;
+    background: #ffffff;
+    border: 1px solid #000000;
+    border-radius: 0;
+}
+
+.vol-knob:hover::-webkit-slider-thumb { background: #ff2222; }
+.vol-knob:hover::-moz-range-thumb { background: #ff2222; }
+
+.vol-knob:focus:not(:focus-visible) {
+    outline: none;
+}
+
+@media (max-width: 600px) {
+    .player-right { gap: 8px; }
+    .vol-label { display: none; }
+    .vol-knob { width: 60px; }
+    .player-btn { font-size: 11px; letter-spacing: 1px; padding: 3px 6px; }
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .yt-label { filter: blur(0.8px) contrast(1.6); }
+}
+
 /* MAIN VIDEO PLAYER (index.html) — only play/pause + sound */
 
 .player {
@@ -713,7 +837,8 @@ a[href] *,
 button,
 [role="link"],
 [role="link"] *,
-.player-btn {
+.player-btn,
+.vol-knob {
     cursor: url("images/cursor-red.png") 16 2, pointer !important;
 }
 
