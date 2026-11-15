@@ -690,3 +690,29 @@ h3.live.flash {
         animation: none;
     }
 }
+
+
+/* ========== CUSTOM CURSOR — orthodox cross ========== */
+/* white cross everywhere; red cross over anything clickable.
+   Hotspot (2nd/3rd numbers) = top tip of the cross. */
+
+html,
+body,
+body * {
+    cursor: url("images/cursor.png") 16 2, auto !important;
+}
+
+a[href],
+a[href] *,
+button,
+[role="link"],
+[role="link"] *,
+.main-video,
+.player-btn {
+    cursor: url("images/cursor-red.png") 16 2, pointer !important;
+}
+
+.seven.big.no-link,
+.seven.word {
+    cursor: url("images/cursor.png") 16 2, auto !important;
+}

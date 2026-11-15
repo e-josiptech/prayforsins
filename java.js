@@ -297,13 +297,13 @@
 
 
 /* ==========================================================
-   CLICK SOUND — a quiet "chirp" on anything clickable
+   CLICK SOUND — a quiet menu click on anything clickable
    (links, buttons, the popup, the main video).
    Links that open in the same tab wait a moment so the
    sound can be heard before the page changes.
    ========================================================== */
 (function () {
-    var SRC = "sounds/chirp2.m4a";   // slowed + reverb chirp
+    var SRC = "sounds/click.m4a";    // GTA-style menu click
     var VOLUME = 0.3;              // comfortable, not loud
     var NAV_DELAY_MS = 220;        // let the chirp start before leaving
     var CLICKABLE = 'a[href], button, [role="link"], .main-video';
