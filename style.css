@@ -198,9 +198,9 @@ h2.live {
 
 .small-pic {
     display: block;
-    width: 120px;
+    width: 180px;
     height: auto;
-    margin: 18px auto 0;
+    margin: 45px auto 0;
     image-rendering: pixelated;
 }
 
