@@ -294,3 +294,68 @@
         });
     }, 1000);
 })();
+
+
+/* ==========================================================
+   CLICK SOUND — a quiet "chirp" on anything clickable
+   (links, buttons, the popup, the main video).
+   Links that open in the same tab wait a moment so the
+   sound can be heard before the page changes.
+   ========================================================== */
+(function () {
+    var SRC = "sounds/chirp.m4a";
+    var VOLUME = 0.3;              // comfortable, not loud
+    var NAV_DELAY_MS = 220;        // let the chirp start before leaving
+    var CLICKABLE = 'a[href], button, [role="link"], .main-video';
+
+    var AC = window.AudioContext || window.webkitAudioContext;
+    var ctx = null, buffer = null, fallback = null;
+
+    if (AC) {
+        // decode up front so the first click plays instantly
+        ctx = new AC();
+        fetch(SRC)
+            .then(function (r) { return r.arrayBuffer(); })
+            .then(function (data) {
+                ctx.decodeAudioData(data, function (b) { buffer = b; }, function () {});
+            })
+            .catch(function () {});
+    } else {
+        fallback = new Audio(SRC);
+        fallback.volume = VOLUME;
+    }
+
+    function chirp() {
+        if (ctx && buffer) {
+            if (ctx.state === "suspended") ctx.resume();
+            var src = ctx.createBufferSource();
+            var gain = ctx.createGain();
+            gain.gain.value = VOLUME;
+            src.buffer = buffer;
+            src.connect(gain).connect(ctx.destination);
+            src.start(0);
+        } else if (ctx) {
+            ctx.resume();          // unlock audio for the next click
+        } else if (fallback) {
+            fallback.currentTime = 0;
+            fallback.play().catch(function () {});
+        }
+    }
+
+    document.addEventListener("click", function (e) {
+        var el = e.target.closest && e.target.closest(CLICKABLE);
+        if (!el) return;
+        chirp();
+
+        // same-tab link: hold the navigation for a moment
+        if (el.tagName === "A" && !e.defaultPrevented &&
+            el.target !== "_blank" && !el.hasAttribute("download") &&
+            !(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) && e.button === 0) {
+            var href = el.getAttribute("href");
+            if (href && href.charAt(0) !== "#") {
+                e.preventDefault();
+                setTimeout(function () { window.location.href = el.href; }, NAV_DELAY_MS);
+            }
+        }
+    });
+})();
