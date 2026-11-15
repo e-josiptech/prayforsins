@@ -27,10 +27,10 @@ body {
 /* TITLE */
 
 h1 {
-    font-family: calibri, sans-serif;
-    font-size: 42px;
-    font-weight: bold;
-    letter-spacing: 2px;
+    font-family: "UnifrakturMaguntia", "Old English Text MT", serif;
+    font-size: 64px;
+    font-weight: normal;
+    letter-spacing: 3px;
     margin-bottom: 38px;
 }
 
@@ -196,6 +196,34 @@ h2.live {
     background: #111;
 }
 
+/* SOCIAL ICONS */
+
+.socials {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    display: flex;
+    gap: 14px;
+    z-index: 10;
+}
+
+.socials a {
+    display: block;
+    line-height: 0;
+}
+
+.socials img {
+    width: 18px;
+    height: 18px;
+    filter: invert(1);          /* black icons -> white */
+    opacity: 0.8;
+}
+
+.socials a:hover img {
+    opacity: 1;
+    filter: invert(1) drop-shadow(0 0 3px rgba(255,255,255,0.6));
+}
+
 .small-pic {
     display: block;
     width: 180px;
@@ -228,7 +256,7 @@ h2.live {
     }
 
     h1 {
-        font-size: 26px;
+        font-size: 44px;
         margin-bottom: 28px;
     }
 
