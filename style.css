@@ -356,3 +356,86 @@ h2.live {
         width: 95%;
     }
 }
+
+/* ========== SEVENS ANIMATION (java.js) ========== */
+
+/* layer sits behind the page content */
+.sevens-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+/* content above the layer; empty areas let clicks through to the 7s */
+.website {
+    position: relative;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.website a,
+.website video {
+    pointer-events: auto;
+}
+
+.seven {
+    position: absolute;
+    font-family: "UnifrakturCook", "UnifrakturMaguntia", serif;
+    font-weight: 700;
+    line-height: 0.9;
+    text-decoration: none;
+    white-space: nowrap;
+    pointer-events: auto;
+    cursor: pointer;
+    transform: rotate(var(--tilt, 0deg));
+    /* old-cartoon: pop in on 4 choppy frames, then "boil" at ~8fps */
+    animation:
+        seven-in 0.5s steps(4, end) both,
+        seven-boil 0.375s steps(1, end) 0.5s infinite;
+}
+
+.seven.big {
+    font-size: min(65vh, 110vw);
+    text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.6);
+}
+
+.seven.word {
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+
+.seven.out {
+    animation: seven-out 0.5s steps(4, end) both;
+}
+
+@keyframes seven-in {
+    0%   { opacity: 0;   transform: rotate(var(--tilt)) scale(0.6); }
+    100% { opacity: 1;   transform: rotate(var(--tilt)) scale(1); }
+}
+
+@keyframes seven-out {
+    0%   { opacity: 1;   transform: rotate(var(--tilt)) scale(1); }
+    100% { opacity: 0;   transform: rotate(var(--tilt)) scale(1.15); }
+}
+
+/* hand-drawn wobble: 3 slightly different "frames" */
+@keyframes seven-boil {
+    0%      { transform: rotate(var(--tilt)) translate(0, 0);       opacity: 1; }
+    33.33%  { transform: rotate(calc(var(--tilt) + 1.2deg)) translate(1px, -1px); opacity: 0.92; }
+    66.66%  { transform: rotate(calc(var(--tilt) - 0.8deg)) translate(-1px, 1px); opacity: 0.97; }
+}
+
+@media (max-width: 600px) {
+    .seven.word {
+        font-size: 14px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .seven,
+    .seven.out {
+        animation: none;
+    }
+}
