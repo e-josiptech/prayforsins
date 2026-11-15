@@ -203,6 +203,45 @@ h2.live {
     background: #111;
 }
 
+/* MAIN VIDEO PLAYER (index.html) — only play/pause + sound */
+
+.player {
+    position: relative;
+}
+
+.player .main-video {
+    cursor: pointer;
+}
+
+.player-controls {
+    position: absolute;
+    left: 7px;                  /* inside the red border */
+    right: 7px;
+    bottom: 7px;
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 10px;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.75));
+    pointer-events: none;
+}
+
+.player-btn {
+    pointer-events: auto;
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    color: #ffffff;
+    font-family: "Courier New", monospace;
+    font-size: 12px;
+    letter-spacing: 2px;
+    padding: 4px 8px;
+    cursor: pointer;
+}
+
+.player-btn:hover {
+    color: #ff2222;
+    border-color: #ff2222;
+}
+
 /* BOTTOM PICTURE — B&W, low quality, faded into the page */
 
 .bottom-pic-link {

@@ -148,3 +148,72 @@
         img.src = pics[i];
     });
 })();
+
+
+/* ==========================================================
+   MAIN VIDEO — play/pause + sound only.
+   No seek bar, no speed menu, quieter volume.
+   ========================================================== */
+(function () {
+    var video = document.querySelector(".main-video");
+    if (!video) return;
+    var VOLUME = 0.35;          // 35% — quieter than default
+    var playBtn = document.querySelector('.player-btn[data-act="play"]');
+    var soundBtn = document.querySelector('.player-btn[data-act="sound"]');
+
+    video.volume = VOLUME;
+
+    function render() {
+        playBtn.textContent = video.paused ? "▶ PLAY" : "❚❚ PAUSE";
+        soundBtn.textContent = video.muted ? "SOUND ON" : "SOUND OFF";
+    }
+
+    function toggle() {
+        if (video.paused) {
+            if (video.ended) { lastTime = 0; video.currentTime = 0; }  // replay from start
+            video.muted = false;
+            video.volume = VOLUME;
+            video.play().catch(function () {});
+        } else {
+            video.pause();
+        }
+    }
+
+    // try to autoplay with sound; browsers often block that,
+    // so fall back to muted autoplay (SOUND ON button turns it on)
+    video.play().catch(function () {
+        video.muted = true;
+        video.play().catch(function () {}).then(render);
+    });
+
+    playBtn.addEventListener("click", toggle);
+    video.addEventListener("click", toggle);
+    soundBtn.addEventListener("click", function () {
+        video.muted = !video.muted;
+        video.volume = VOLUME;
+        if (!video.muted && video.paused) video.play().catch(function () {});
+        render();
+    });
+
+    // keep it at normal speed and stop any seeking
+    var lastTime = 0;
+    video.addEventListener("timeupdate", function () {
+        if (!video.seeking) lastTime = video.currentTime;
+    });
+    video.addEventListener("seeking", function () {
+        if (Math.abs(video.currentTime - lastTime) > 0.5 && !video.ended) {
+            video.currentTime = lastTime;
+        }
+    });
+    video.addEventListener("ratechange", function () {
+        if (video.playbackRate !== 1) video.playbackRate = 1;
+    });
+    video.addEventListener("volumechange", function () {
+        if (video.volume > VOLUME) video.volume = VOLUME;
+        render();
+    });
+    ["play", "pause", "ended"].forEach(function (e) {
+        video.addEventListener(e, render);
+    });
+    render();
+})();
