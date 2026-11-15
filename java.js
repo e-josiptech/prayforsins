@@ -197,8 +197,7 @@
     // autoplay muted
     video.play().catch(function () {}).then(render);
 
-    playBtn.addEventListener("click", toggle);
-    video.addEventListener("click", toggle);
+    playBtn.addEventListener("click", toggle);   // only the PLAY button plays/pauses
     soundBtn.addEventListener("click", function () {
         video.muted = !video.muted;
         video.volume = VOLUME;
@@ -314,7 +313,7 @@
     var VOLUME = 0.18;             // soft, in the background
     var MENU_CHANCE = 0.49;        // links: chance of the "menu" sound
     var NAV_DELAY = { click: 220, menu: 400 };
-    var CLICKABLE = 'a[href], button, [role="link"], .main-video';
+    var CLICKABLE = 'a[href], button, [role="link"]';
 
     var AC = window.AudioContext || window.webkitAudioContext;
     var ctx = AC ? new AC() : null;
