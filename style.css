@@ -196,6 +196,14 @@ h2.live {
     background: #111;
 }
 
+.small-pic {
+    display: block;
+    width: 120px;
+    height: auto;
+    margin: 18px auto 0;
+    image-rendering: pixelated;
+}
+
 .back-link {
     display: inline-block;
     margin-top: 15px;
