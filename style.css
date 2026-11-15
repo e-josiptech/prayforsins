@@ -219,7 +219,7 @@ h2.live {
     object-fit: fill;
     filter: grayscale(1) contrast(1.15) blur(0.6px);
     opacity: 0.55;
-    /* slowly fades away and comes back, 7s loop */
+    /* each picture fades in, stays, fades away (7s); java.js swaps to the next one */
     animation: bottom-fade 7s ease-in-out infinite;
 }
 
@@ -228,9 +228,9 @@ h2.live {
 }
 
 @keyframes bottom-fade {
-    0%, 35%   { opacity: 0.55; }
-    55%, 68%  { opacity: 0; }
-    88%, 100% { opacity: 0.55; }
+    0%        { opacity: 0; }
+    20%, 65%  { opacity: 0.55; }
+    85%, 100% { opacity: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
