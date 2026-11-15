@@ -181,7 +181,8 @@
 
     function render() {
         playBtn.textContent = video.paused ? "▶ PLAY" : "❚❚ PAUSE";
-        soundBtn.textContent = video.muted ? "SOUND ON" : "SOUND OFF";
+        // shows the current state (Russian): muted = "no sound", on = "sound on"
+        soundBtn.textContent = video.muted ? "нет звука" : "звук включён";
     }
 
     function toggle() {

@@ -258,6 +258,11 @@ h2.live {
     cursor: pointer;
 }
 
+/* no blue focus ring after clicking with the mouse (keyboard still gets one) */
+.player-btn:focus:not(:focus-visible) {
+    outline: none;
+}
+
 .player-btn:hover {
     color: #ff2222;
     border-color: #ff2222;
