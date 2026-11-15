@@ -220,12 +220,18 @@
 
 
 /* ==========================================================
-   LIVE SHOW POPUP — shows 2s after the home page loads,
-   once per visit/refresh. Click = jump to the live section.
+   LIVE SHOW POPUP — shows 1s after the home page loads, next to
+   the main video (or at the bottom on narrow screens). Stays until
+   clicked; click = jump to the live section. Back on every visit.
    ========================================================== */
 (function () {
     var live = document.getElementById("live");
-    if (!live) return;
+    var player = document.querySelector(".video-wrapper");
+    if (!live || !player) return;
+
+    var GAP = 40;          // space between video and bar
+    var MIN_W = 300;       // narrower than this -> bottom-of-screen bar
+    var MAX_W = 520;
 
     setTimeout(function () {
         var pop = document.createElement("div");
@@ -234,30 +240,41 @@
         pop.tabIndex = 0;
         pop.innerHTML =
             '<span class="live-pop-cross" aria-hidden="true">☦</span>' +
-            '<span class="live-pop-text">you want to change your life? check where jo777 is performing.</span>' +
-            '<button type="button" class="live-pop-close" aria-label="Close">×</button>';
+            '<span class="live-pop-text">want to change your life? find out where jo777 is performing</span>';
         document.body.appendChild(pop);
 
-        function close() {
-            pop.classList.add("out");
-            setTimeout(function () { pop.remove(); }, 500);
+        // sit in the empty space right of the video when there's room
+        function place() {
+            var r = player.getBoundingClientRect();
+            var left = r.right + GAP;
+            var width = Math.min(MAX_W, window.innerWidth - left - 24);
+            if (width >= MIN_W) {
+                pop.classList.add("docked");
+                pop.style.width = width + "px";
+                pop.style.left = (left + window.scrollX) + "px";
+                pop.style.top = (r.top + window.scrollY + r.height / 2 - pop.offsetHeight / 2) + "px";
+            } else {
+                pop.classList.remove("docked");
+                pop.style.width = pop.style.left = pop.style.top = "";
+            }
         }
+        place();
+        window.addEventListener("resize", place);
+        player.querySelector("video").addEventListener("loadedmetadata", place);
 
         function go() {
-            close();
+            window.removeEventListener("resize", place);
+            pop.classList.add("out");
+            setTimeout(function () { pop.remove(); }, 500);
             live.scrollIntoView({ behavior: "smooth", block: "center" });
             live.classList.remove("flash");
             void live.offsetWidth;          // restart the blink
             live.classList.add("flash");
         }
 
-        pop.addEventListener("click", function (e) {
-            if (e.target.closest(".live-pop-close")) { close(); return; }
-            go();
-        });
+        pop.addEventListener("click", go);
         pop.addEventListener("keydown", function (e) {
             if (e.key === "Enter") go();
-            if (e.key === "Escape") close();
         });
-    }, 2000);
+    }, 1000);
 })();
