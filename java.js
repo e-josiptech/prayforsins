@@ -297,55 +297,94 @@
 
 
 /* ==========================================================
-   CLICK SOUND — a quiet menu click on anything clickable
-   (links, buttons, the popup, the main video).
-   Links that open in the same tab wait a moment so the
-   sound can be heard before the page changes.
+   SOUNDS
+   - "click" (GTA menu): buttons / video, and 51% of link clicks
+   - "menu"  (menu button press): live-show popup always,
+             49% of link clicks, and once when entering the home page
+   Links that open in the same tab wait a moment so the sound
+   is heard before the page changes.
    ========================================================== */
 (function () {
-    var SRC = "sounds/click.m4a";    // GTA-style menu click
+    var FILES = { click: "sounds/click.m4a", menu: "sounds/menu.m4a" };
     var VOLUME = 0.3;              // comfortable, not loud
-    var NAV_DELAY_MS = 220;        // let the chirp start before leaving
+    var MENU_CHANCE = 0.49;        // links: chance of the "menu" sound
+    var NAV_DELAY = { click: 220, menu: 400 };
     var CLICKABLE = 'a[href], button, [role="link"], .main-video';
+    var isHome = !!document.getElementById("live");
 
     var AC = window.AudioContext || window.webkitAudioContext;
-    var ctx = null, buffer = null, fallback = null;
+    var ctx = AC ? new AC() : null;
+    var buffers = {}, fallbacks = {};
 
-    if (AC) {
-        // decode up front so the first click plays instantly
-        ctx = new AC();
-        fetch(SRC)
-            .then(function (r) { return r.arrayBuffer(); })
-            .then(function (data) {
-                ctx.decodeAudioData(data, function (b) { buffer = b; }, function () {});
-            })
-            .catch(function () {});
-    } else {
-        fallback = new Audio(SRC);
-        fallback.volume = VOLUME;
-    }
+    // load + decode everything up front so clicks play instantly
+    Object.keys(FILES).forEach(function (name) {
+        if (ctx) {
+            fetch(FILES[name])
+                .then(function (r) { return r.arrayBuffer(); })
+                .then(function (data) {
+                    ctx.decodeAudioData(data, function (b) {
+                        buffers[name] = b;
+                        if (name === "menu") tryEnterSound();
+                    }, function () {});
+                })
+                .catch(function () {});
+        } else {
+            fallbacks[name] = new Audio(FILES[name]);
+            fallbacks[name].volume = VOLUME;
+        }
+    });
 
-    function chirp() {
-        if (ctx && buffer) {
+    function play(name) {
+        if (ctx && buffers[name]) {
             if (ctx.state === "suspended") ctx.resume();
             var src = ctx.createBufferSource();
             var gain = ctx.createGain();
             gain.gain.value = VOLUME;
-            src.buffer = buffer;
+            src.buffer = buffers[name];
             src.connect(gain).connect(ctx.destination);
             src.start(0);
         } else if (ctx) {
-            ctx.resume();          // unlock audio for the next click
-        } else if (fallback) {
-            fallback.currentTime = 0;
-            fallback.play().catch(function () {});
+            ctx.resume();
+        } else if (fallbacks[name]) {
+            fallbacks[name].currentTime = 0;
+            fallbacks[name].play().catch(function () {});
         }
     }
 
+    // ---- sound when entering the home page ----
+    // Browsers usually block sound until the visitor interacts, so:
+    // play right away if allowed, otherwise on the first tap/click/key.
+    var enterPending = isHome;
+    var enterPlayedAt = 0;
+    function playEnter() {
+        if (!enterPending || !buffers.menu) return;
+        enterPending = false;
+        enterPlayedAt = Date.now();
+        play("menu");
+    }
+    function tryEnterSound() {
+        if (!enterPending) return;
+        ctx.resume();
+        setTimeout(function () {
+            if (ctx.state === "running") playEnter();
+        }, 250);
+    }
+    ["pointerdown", "keydown", "touchstart"].forEach(function (ev) {
+        window.addEventListener(ev, playEnter, { passive: true });
+    });
+
+    // ---- clicks ----
     document.addEventListener("click", function (e) {
         var el = e.target.closest && e.target.closest(CLICKABLE);
         if (!el) return;
-        chirp();
+
+        var sound;
+        if (el.classList.contains("live-pop")) sound = "menu";
+        else if (el.tagName === "A") sound = Math.random() < MENU_CHANCE ? "menu" : "click";
+        else sound = "click";
+
+        // the first tap already played the enter sound — don't stack two
+        if (Date.now() - enterPlayedAt > 500) play(sound);
 
         // same-tab link: hold the navigation for a moment
         if (el.tagName === "A" && !e.defaultPrevented &&
@@ -354,7 +393,7 @@
             var href = el.getAttribute("href");
             if (href && href.charAt(0) !== "#") {
                 e.preventDefault();
-                setTimeout(function () { window.location.href = el.href; }, NAV_DELAY_MS);
+                setTimeout(function () { window.location.href = el.href; }, NAV_DELAY[sound]);
             }
         }
     });
