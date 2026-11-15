@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jo777.red/sitemap.xml
