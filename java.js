@@ -299,18 +299,16 @@
 /* ==========================================================
    SOUNDS
    - "click" (GTA menu): buttons / video, and 51% of link clicks
-   - "menu"  (menu button press): live-show popup always,
-             49% of link clicks, and once when entering the home page
+   - "menu"  (menu button press): live-show popup always, 49% of link clicks
    Links that open in the same tab wait a moment so the sound
    is heard before the page changes.
    ========================================================== */
 (function () {
     var FILES = { click: "sounds/click.m4a", menu: "sounds/menu.m4a" };
-    var VOLUME = 0.3;              // comfortable, not loud
+    var VOLUME = 0.18;             // soft, in the background
     var MENU_CHANCE = 0.49;        // links: chance of the "menu" sound
     var NAV_DELAY = { click: 220, menu: 400 };
     var CLICKABLE = 'a[href], button, [role="link"], .main-video';
-    var isHome = !!document.getElementById("live");
 
     var AC = window.AudioContext || window.webkitAudioContext;
     var ctx = AC ? new AC() : null;
@@ -324,7 +322,6 @@
                 .then(function (data) {
                     ctx.decodeAudioData(data, function (b) {
                         buffers[name] = b;
-                        if (name === "menu") tryEnterSound();
                     }, function () {});
                 })
                 .catch(function () {});
@@ -351,28 +348,6 @@
         }
     }
 
-    // ---- sound when entering the home page ----
-    // Browsers usually block sound until the visitor interacts, so:
-    // play right away if allowed, otherwise on the first tap/click/key.
-    var enterPending = isHome;
-    var enterPlayedAt = 0;
-    function playEnter() {
-        if (!enterPending || !buffers.menu) return;
-        enterPending = false;
-        enterPlayedAt = Date.now();
-        play("menu");
-    }
-    function tryEnterSound() {
-        if (!enterPending) return;
-        ctx.resume();
-        setTimeout(function () {
-            if (ctx.state === "running") playEnter();
-        }, 250);
-    }
-    ["pointerdown", "keydown", "touchstart"].forEach(function (ev) {
-        window.addEventListener(ev, playEnter, { passive: true });
-    });
-
     // ---- clicks ----
     document.addEventListener("click", function (e) {
         var el = e.target.closest && e.target.closest(CLICKABLE);
@@ -383,8 +358,7 @@
         else if (el.tagName === "A") sound = Math.random() < MENU_CHANCE ? "menu" : "click";
         else sound = "click";
 
-        // the first tap already played the enter sound — don't stack two
-        if (Date.now() - enterPlayedAt > 500) play(sound);
+        play(sound);
 
         // same-tab link: hold the navigation for a moment
         if (el.tagName === "A" && !e.defaultPrevented &&
