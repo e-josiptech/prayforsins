@@ -205,14 +205,24 @@ h2.live {
 
 /* BOTTOM PICTURE — B&W, low quality, faded into the page */
 
+.bottom-pic-link {
+    display: block;
+    width: 760px;
+    max-width: 92%;
+    margin: 140px auto 0;       /* pushed further down the page */
+}
+
 .bottom-pic {
     display: block;
-    width: 420px;
-    max-width: 85%;
-    height: auto;
-    margin: 30px auto 0;
+    width: 100%;
+    aspect-ratio: 3 / 2;        /* square picture stretched sideways a bit */
+    object-fit: fill;
     filter: grayscale(1) contrast(1.15) blur(0.6px);
     opacity: 0.55;
+}
+
+.bottom-pic-link:hover .bottom-pic {
+    opacity: 0.75;
 }
 
 /* SOCIAL ICONS */
