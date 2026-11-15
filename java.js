@@ -303,7 +303,7 @@
    sound can be heard before the page changes.
    ========================================================== */
 (function () {
-    var SRC = "sounds/chirp.m4a";
+    var SRC = "sounds/chirp2.m4a";   // slowed + reverb chirp
     var VOLUME = 0.3;              // comfortable, not loud
     var NAV_DELAY_MS = 220;        // let the chirp start before leaving
     var CLICKABLE = 'a[href], button, [role="link"], .main-video';
