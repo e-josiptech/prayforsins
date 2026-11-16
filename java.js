@@ -408,6 +408,19 @@
     if (!roots.length) return;
     var DEFAULT_VOL = 35;
     var ytRoots = [];
+
+    // phones: tapping anywhere outside the videos hides open controls
+    // right away (no waiting for the 3s auto-hide)
+    if (window.matchMedia("(hover: none)").matches) {
+        document.addEventListener("pointerdown", function (e) {
+            if (e.target.closest && e.target.closest(".mplayer")) return;
+            document.querySelectorAll(".mplayer.show-ctrl").forEach(function (r) {
+                r.classList.add("instant");
+                r.classList.remove("show-ctrl");
+                setTimeout(function () { r.classList.remove("instant"); }, 60);
+            });
+        }, { passive: true });
+    }
     var all = [];                         // every wired player on the page
     var shared = { muted: false, volume: DEFAULT_VOL };   // sound on by default
 

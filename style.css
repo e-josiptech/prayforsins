@@ -291,6 +291,11 @@ h2.live {
         opacity: 1;
     }
 
+    /* tapped outside: hide at once, no fade */
+    .mplayer.instant .player-controls {
+        transition: none;
+    }
+
     /* hidden controls can't be tapped by accident */
     .mplayer:not(.show-ctrl) .player-controls,
     .mplayer:not(.show-ctrl) .player-controls * {
