@@ -286,7 +286,7 @@
         hover: "sounds/hover.m4a"
     };
     if (CLICK_SOUND_ON) FILES.click = "sounds/click.m4a";
-    var HOVER_VOLUME = 0.95;       // menu "tick" when moving onto things
+    var HOVER_VOLUME = 1.09;       // menu "tick" — slightly boosted above the file's own level
     var HOVERABLE = 'a[href], button, [role="link"], .main-video, h1, ' +
         'h3.live, .photo-frame, .small-pic, .bottom-pic';
     var VOLUME = 0.7;              // click sound
@@ -327,7 +327,7 @@
         } else if (ctx) {
             ctx.resume();
         } else if (fallbacks[name]) {
-            fallbacks[name].volume = vol;
+            fallbacks[name].volume = Math.min(vol, 1);   // old browsers: max 100%
             fallbacks[name].currentTime = 0;
             fallbacks[name].play().catch(function () {});
         }
