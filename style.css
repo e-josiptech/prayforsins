@@ -954,58 +954,36 @@ button,
 }
 
 
-/* ========== HOME PAGE: social icons (top-right), stretched sideways ========== */
-/* no white tiles: white logos straight on black with the blood dripping
-   right over them, stretched 2.2x wide for a distorted, low-quality look.
-   Sits in the top-right corner of the page. */
+/* ========== HOME PAGE: social links as text (top-right) ========== */
+/* same look as the CLICK text: bold typewriter, wide spacing, warped */
 
-.socials.socials-header {
+.social-text {
     position: absolute;
-    top: 14px;
-    right: 16px;
-    justify-content: flex-end;
-    padding-top: 0;
-    gap: 14px;
+    top: 18px;
+    right: 20px;
+    display: flex;
+    gap: 22px;
     z-index: 10;
 }
 
-.socials.socials-header a,
-.socials.socials-header a:hover {
-    width: 70px;                    /* 32px tall x 2.2 wide */
-    height: 32px;
-    background: transparent;
-    border-color: transparent;
+.social-text a {
+    color: #ffffff;
+    font-family: "Courier New", monospace;
+    font-size: 15px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    text-decoration: none;
+    filter: url(#seven-warp) blur(0.8px) contrast(1.6);
 }
 
-.socials.socials-header img,
-.socials.socials-header a:hover img {
-    width: 19px;
-    height: 19px;
-    top: 0;
-    transform: scaleX(2.2);
-    filter: invert(1);              /* black logo -> white */
+.social-text a:hover {
+    color: #ff2222;
 }
 
-.socials.socials-header a:hover img {
-    filter: invert(1) drop-shadow(0 0 4px rgba(255, 34, 34, 0.9));
-}
-
-/* blood sits ON the logo: band across its top edge, drips run down over it */
-.socials.socials-header a::after {
-    top: 5px;
-    left: 50%;
-    width: 46px;
-    height: 34px;
-    margin-left: -23px;
-    background-size: 100% 76px;
-}
-
-.socials.socials-header a:nth-child(2)::after {
-    transform: scaleX(-1);
-}
-
-.socials.socials-header a:nth-child(3)::after {
-    height: 30px;
+@media (hover: none) and (pointer: coarse) {
+    .social-text a {
+        filter: blur(0.8px) contrast(1.6);   /* iPhone-safe */
+    }
 }
 
 .website.home {
@@ -1020,37 +998,19 @@ button,
 
 
 @media (max-width: 600px) {
-    .socials.socials-header {
-        top: 10px;
-        right: 10px;
-        gap: 8px;
+    .social-text {
+        top: 14px;
+        right: 12px;
+        gap: 14px;
     }
 
-    .socials.socials-header a,
-    .socials.socials-header a:hover {
-        width: 53px;                /* 24px tall x 2.2 wide */
-        height: 24px;
-    }
-
-    .socials.socials-header img {
-        width: 14px;
-        height: 14px;
-    }
-
-    .socials.socials-header a::after {
-        top: 4px;
-        width: 34px;
-        height: 26px;
-        margin-left: -17px;
-        background-size: 100% 56px;
-    }
-
-    .socials.socials-header a:nth-child(3)::after {
-        height: 22px;
+    .social-text a {
+        font-size: 12px;
+        letter-spacing: 2px;
     }
 
     .website.home {
-        padding-top: 58px;          /* room for the corner icons */
+        padding-top: 50px;          /* room for the links */
     }
 
     .website.home h1 {
