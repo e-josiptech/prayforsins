@@ -1,5 +1,16 @@
 /* GENERAL */
 
+/* JO777 title colors — to go back to the old blue, set
+   --title-color: var(--title-blue);  (and --title-shadow: none;) */
+:root {
+    --title-blue: #003cff;          /* the original blue — saved */
+    --title-red: #d10000;
+    --title-color: var(--title-red);
+    --title-shadow:
+        3px 3px 0 #2a0008,                  /* hard dark offset, old print look */
+        0 0 14px rgba(209, 0, 0, 0.45);     /* soft red glow */
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -35,7 +46,8 @@ h1 {
 }
 
 h1 a {
-    color: #003cff;
+    color: var(--title-color);
+    text-shadow: var(--title-shadow);
     text-decoration: none;
 }
 
