@@ -185,6 +185,16 @@ h2.live {
 }
 
 
+/* shadow for every cross — on a wrapper that doesn't spin, so the shadow
+   always falls down-right (same style as the JO777 title shadow) */
+.cross-shadow {
+    display: inline-block;
+    line-height: 0;
+    filter:
+        drop-shadow(4px 4px 0 #2a0008)
+        drop-shadow(0 0 12px rgba(209, 0, 0, 0.45));
+}
+
 /* no blue focus box around the cross after clicking it with the mouse */
 .heart-link:focus:not(:focus-visible) {
     outline: none;
