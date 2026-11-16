@@ -207,6 +207,7 @@ h2.live {
 }
 
 .music-page .title-row {
+    margin-top: 24px;           /* room under the corner icons for the spinning cross */
     margin-bottom: 50px;
 }
 
@@ -214,17 +215,35 @@ h2.live {
     flex: none;
 }
 
+/* same size as the CLICK cross at the bottom */
 .side-cross .cross {
-    font-size: 90px;
+    font-size: 150px;
+}
+
+/* right cross spins the other way, so the two mirror each other */
+.side-cross:last-child .cross {
+    animation-direction: reverse, normal;
+}
+
+/* JO777 the same size on both pages */
+.title-row h1 {
+    font-size: 88px;
 }
 
 @media (max-width: 600px) {
-    .title-row {
+    .title-row,
+    .music-page .title-row {
+        margin-top: 0;
         margin-bottom: 28px;
     }
 
+    /* 150px won't fit next to the title on a phone */
     .side-cross .cross {
-        font-size: 44px;
+        font-size: 58px;
+    }
+
+    .title-row h1 {
+        font-size: 60px;
     }
 }
 
@@ -568,6 +587,7 @@ h2.live {
     display: block;
     width: 100%;
     height: auto;
+    opacity: 0.6;               /* blends into the black page */
 }
 
 /* LIVE SHOW POPUP (java.js) — long thin retro bar.
@@ -620,12 +640,12 @@ h2.live {
 .live-pop-text {
     flex: 1;
     font-family: "Courier New", monospace;
-    font-size: 15px;
+    font-size: 17px;
     font-weight: bold;
     letter-spacing: 1px;
     line-height: 1.4;
     text-align: left;
-    filter: url(#seven-warp) blur(0.7px) contrast(1.6);
+    filter: blur(0.25px) contrast(1.3);    /* just a touch rough, easy to read */
 }
 
 .live-pop:hover .live-pop-cross {
@@ -673,7 +693,7 @@ h3.live.flash {
     }
 
     .live-pop-text {
-        font-size: 12px;
+        font-size: 14px;
     }
 }
 
@@ -918,7 +938,7 @@ h3.live.flash {
     }
 
     .live-pop-text {
-        filter: blur(0.7px) contrast(1.6);
+        filter: blur(0.25px) contrast(1.3);
     }
 }
 
