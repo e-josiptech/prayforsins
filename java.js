@@ -452,7 +452,33 @@
 
         // YouTube only: tap the middle of the video to play / pause
         var shield = root.querySelector(".yt-shield");
-        if (shield) shield.addEventListener("click", function () { playBtn.click(); });
+
+        // ---- show/hide the controls ----
+        // Desktop: CSS shows them while the mouse is over the video.
+        // Phones: tap the video to show them; they hide again 3s after
+        // the last touch (dragging a slider keeps them up).
+        var touch = window.matchMedia("(hover: none)").matches;
+        var hideTimer = null;
+        function showControls() {
+            root.classList.add("show-ctrl");
+            clearTimeout(hideTimer);
+            hideTimer = setTimeout(function () { root.classList.remove("show-ctrl"); }, 3000);
+        }
+        var controlsEl = root.querySelector(".player-controls");
+        if (touch) {
+            controlsEl.addEventListener("pointerdown", showControls);
+            controlsEl.addEventListener("input", showControls);
+            var videoEl = root.querySelector("video");
+            if (videoEl) videoEl.addEventListener("click", showControls);
+        }
+
+        // YouTube: tap the middle to play / pause.
+        // On phones the first tap only shows the controls.
+        if (shield) shield.addEventListener("click", function () {
+            if (touch && !root.classList.contains("show-ctrl")) { showControls(); return; }
+            if (touch) showControls();
+            playBtn.click();
+        });
 
         function render() {
             playBtn.textContent = api.isPaused() ? "▶ PLAY" : "❚❚ PAUSE";

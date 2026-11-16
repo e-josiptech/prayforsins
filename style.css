@@ -272,6 +272,32 @@ h2.live {
     z-index: 2;
 }
 
+/* video page: controls are hidden until you hover (desktop)
+   or tap the video (phones) — choppy retro fade */
+.mplayer .player-controls {
+    opacity: 0;
+    transition: opacity 0.3s steps(3, end);
+}
+
+@media (hover: hover) {
+    .mplayer:hover .player-controls,
+    .mplayer:focus-within .player-controls {
+        opacity: 1;
+    }
+}
+
+@media (hover: none) {
+    .mplayer.show-ctrl .player-controls {
+        opacity: 1;
+    }
+
+    /* hidden controls can't be tapped by accident */
+    .mplayer:not(.show-ctrl) .player-controls,
+    .mplayer:not(.show-ctrl) .player-controls * {
+        pointer-events: none !important;
+    }
+}
+
 /* seek slider row (video page) */
 .mplayer .player-controls {
     flex-wrap: wrap;
