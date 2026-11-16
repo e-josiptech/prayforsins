@@ -300,6 +300,31 @@ h2.live {
     letter-spacing: 1px;
 }
 
+/* buttons keep the same width whatever their text says,
+   so nothing shifts when PLAY/PAUSE or the sound label changes */
+.player-btn[data-act="play"]  { width: 104px; text-align: center; white-space: nowrap; }
+.player-btn[data-act="sound"] { width: 150px; text-align: center; white-space: nowrap; }
+
+/* video page: PLAY + knob + sound always on ONE line that can't wrap */
+.ctrl-row {
+    flex-basis: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    min-width: 0;
+}
+
+.ctrl-row > .player-btn {
+    flex: none;
+}
+
+.mplayer .player-right {
+    flex: 1;
+    min-width: 0;
+    justify-content: flex-end;
+    margin-left: 12px;
+}
+
 .player-right {
     display: flex;
     align-items: center;
@@ -366,7 +391,16 @@ h2.live {
     .player-right { gap: 8px; }
     .vol-label { display: none; }
     .vol-knob { width: 80px; }
-    .player-btn { font-size: 12px; letter-spacing: 1px; padding: 7px 10px; }
+    /* .player-controls prefix = stronger than the base .player-btn rule below */
+    .player-controls .player-btn { font-size: 11px; letter-spacing: 0.5px; padding: 7px 4px; }
+    .player-controls .player-btn[data-act="play"]  { width: 84px; }
+    .player-controls .player-btn[data-act="sound"] { width: 116px; }
+
+    /* knob takes whatever room is left between PLAY and sound */
+    .mplayer .player-controls { flex-wrap: wrap; padding: 6px 8px; }
+    .mplayer .player-right { margin-left: 8px; }
+    .mplayer .vol { flex: 1; min-width: 0; }
+    .mplayer .vol-knob { width: 100%; min-width: 0; }
 }
 
 /* MAIN VIDEO PLAYER (index.html) — only play/pause + sound */
