@@ -295,7 +295,8 @@
    SOUNDS
    - "click" (GTA menu): switched OFF for now (set CLICK_SOUND_ON = true)
    - "menu"  (mouse click sound): every click on anything clickable,
-             EXCEPT video/song controls (anything inside a .player)
+             incl. PLAY/PAUSE, but not the other video controls
+             (sound button, sliders) so it never mixes into a song
    - "hover" (Windows 7 menu tick): mouse moving onto photos, header,
              links, icons, buttons — like browsing a game menu
    Links that open in the same tab wait a moment so the sound
@@ -311,7 +312,7 @@
     var HOVER_VOLUME = 0.2;        // menu "tick" when moving onto things
     var HOVERABLE = 'a[href], button, [role="link"], .main-video, h1, ' +
         'h3.live, .photo-frame, .small-pic, .bottom-pic';
-    var VOLUME = 0.15;             // click sound — soft (this file is quieter)
+    var VOLUME = 0.22;             // click sound — soft (this file is quieter)
     var NAV_DELAY = { click: 220, menu: 220 };
     var CLICKABLE = 'a[href], button, [role="link"]';
 
@@ -375,7 +376,8 @@
         if (!el) return;
 
         var sound = "menu";            // always the mouse click sound
-        var isVideoControl = !!el.closest(".player");   // never over songs/videos
+        // video controls stay silent, except PLAY / PAUSE
+        var isVideoControl = !!el.closest(".player") && !el.matches('[data-act="play"]');
 
         if (!isVideoControl && (sound !== "click" || CLICK_SOUND_ON)) play(sound);
 
