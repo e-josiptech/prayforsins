@@ -294,7 +294,8 @@
 /* ==========================================================
    SOUNDS
    - "click" (GTA menu): switched OFF for now (set CLICK_SOUND_ON = true)
-   - "menu"  (menu button press): every click on anything clickable
+   - "menu"  (menu button press): every click on anything clickable,
+             EXCEPT video/song controls (anything inside a .player)
    - "hover" (Windows 7 menu tick): mouse moving onto photos, header,
              links, icons, buttons — like browsing a game menu
    Links that open in the same tab wait a moment so the sound
@@ -374,8 +375,9 @@
         if (!el) return;
 
         var sound = "menu";            // always the menu-button sound
+        var isVideoControl = !!el.closest(".player");   // never over songs/videos
 
-        if (sound !== "click" || CLICK_SOUND_ON) play(sound);
+        if (!isVideoControl && (sound !== "click" || CLICK_SOUND_ON)) play(sound);
 
         // same-tab link: hold the navigation for a moment
         if (el.tagName === "A" && !e.defaultPrevented &&
