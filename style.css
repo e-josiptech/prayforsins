@@ -23,7 +23,7 @@ body {
        sits on top of the repeated plate (lower % = more plate visible) */
     background-image:
         linear-gradient(rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.82)),
-        url("images/plate-tile.jpg");
+        url("images/plate2-tile.jpg");
     background-repeat: repeat;
     color: white;
     font-family: "Courier New", monospace;
