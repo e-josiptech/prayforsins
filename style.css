@@ -185,6 +185,50 @@ h2.live {
 }
 
 
+/* no blue focus box around the cross after clicking it with the mouse */
+.heart-link:focus:not(:focus-visible) {
+    outline: none;
+}
+
+
+/* TITLE ROW — spinning cross at the far left and far right of JO777
+   (same spin / color flip / hover / link as the CLICK cross) */
+
+.title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 38px;
+}
+
+.title-row h1 {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.music-page .title-row {
+    margin-bottom: 50px;
+}
+
+.side-cross {
+    flex: none;
+}
+
+.side-cross .cross {
+    font-size: 90px;
+}
+
+@media (max-width: 600px) {
+    .title-row {
+        margin-bottom: 28px;
+    }
+
+    .side-cross .cross {
+        font-size: 44px;
+    }
+}
+
+
 /* ANIMATION */
 
 @keyframes retro-spin {
