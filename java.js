@@ -286,10 +286,10 @@
         hover: "sounds/hover.m4a"
     };
     if (CLICK_SOUND_ON) FILES.click = "sounds/click.m4a";
-    var HOVER_VOLUME = 0.9;        // menu "tick" when moving onto things
+    var HOVER_VOLUME = 0.95;       // menu "tick" when moving onto things
     var HOVERABLE = 'a[href], button, [role="link"], .main-video, h1, ' +
         'h3.live, .photo-frame, .small-pic, .bottom-pic';
-    var VOLUME = 0.75;             // click sound
+    var VOLUME = 0.7;              // click sound
     var NAV_DELAY = { click: 220, menu: 220 };
     var CLICKABLE = 'a[href], button, [role="link"]';
 
