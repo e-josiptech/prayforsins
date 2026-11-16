@@ -395,7 +395,8 @@
 
 /* ==========================================================
    VIDEO PAGE PLAYERS (music.html) — local mp4s + YouTube.
-   Start muted, PLAY/PAUSE button (YouTube videos: tapping the
+   Nothing autoplays; sound is ON by default (press PLAY to start).
+   PLAY/PAUSE button (YouTube videos: tapping the
    middle works too), seek slider, volume knob, no speed menu.
    Sound on/off + volume are shared by all videos on the page, and
    only one video plays at a time (starting one pauses the others).
@@ -406,7 +407,7 @@
     var DEFAULT_VOL = 35;
     var ytRoots = [];
     var all = [];                         // every wired player on the page
-    var shared = { muted: true, volume: DEFAULT_VOL };
+    var shared = { muted: false, volume: DEFAULT_VOL };   // sound on by default
 
     // apply the shared sound settings to every player
     function applySound() {
@@ -490,7 +491,7 @@
 
     // ---- local mp4 videos ----
     function localApi(video) {
-        video.muted = true;
+        video.muted = false;
         video.volume = DEFAULT_VOL / 100;
         video.addEventListener("ratechange", function () {   // no speed change
             if (video.playbackRate !== 1) video.playbackRate = 1;
@@ -519,15 +520,14 @@
     roots.forEach(function (root) {
         if (root.getAttribute("data-kind") === "youtube") { ytRoots.push(root); return; }
         var video = root.querySelector("video");
-        wire(root, localApi(video));
-        if (video.autoplay) video.play().catch(function () {});
+        wire(root, localApi(video));        // no autoplay — visitor presses PLAY
     });
 
     // ---- YouTube videos (official IFrame API, no YouTube controls) ----
     if (!ytRoots.length) return;
 
     function ytApi(root) {
-        var player = null, state = -1, muted = true, volume = DEFAULT_VOL;
+        var player = null, state = -1, muted = false, volume = DEFAULT_VOL;
         var listeners = [];
         function emit() { listeners.forEach(function (fn) { fn(); }); }
         player = new YT.Player(root.querySelector(".yt-frame"), {
