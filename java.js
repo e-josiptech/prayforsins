@@ -143,29 +143,6 @@
 
 
 /* ==========================================================
-   BOTTOM PICTURES — cycle through them one after another.
-   The CSS animation fades each one in and out; when a cycle
-   ends (picture is invisible) we swap to the next picture.
-   ========================================================== */
-(function () {
-    var img = document.querySelector(".bottom-pic");
-    if (!img) return;
-    var pics = [
-        "images/bottom.jpg",
-        "images/bottom2.jpg",
-        "images/bottom3.jpg",
-        "images/bottom4.jpg"
-    ];
-    pics.forEach(function (src) { new Image().src = src; });   // preload
-    var i = 0;
-    img.addEventListener("animationiteration", function () {
-        i = (i + 1) % pics.length;
-        img.src = pics[i];
-    });
-})();
-
-
-/* ==========================================================
    MAIN VIDEO — play/pause + sound only.
    No seek bar, no speed menu, quieter volume.
    ========================================================== */
