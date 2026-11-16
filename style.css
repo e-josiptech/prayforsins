@@ -956,7 +956,7 @@ button,
 
 /* ========== HOME PAGE: social icons above JO777, stretched sideways ========== */
 /* no white tiles: white logos straight on black with the blood dripping
-   over them, stretched 3x wide for a distorted, low-quality look */
+   right over them, stretched 2.2x wide for a distorted, low-quality look */
 
 .socials.socials-header {
     position: relative;
@@ -965,11 +965,12 @@ button,
     justify-content: center;
     padding-top: 30px;
     gap: 14px;
+    z-index: 2;
 }
 
 .socials.socials-header a,
 .socials.socials-header a:hover {
-    width: 96px;                    /* 32px tall x 3 wide */
+    width: 70px;                    /* 32px tall x 2.2 wide */
     height: 32px;
     background: transparent;
     border-color: transparent;
@@ -979,7 +980,8 @@ button,
 .socials.socials-header a:hover img {
     width: 19px;
     height: 19px;
-    transform: scaleX(3);
+    top: 0;
+    transform: scaleX(2.2);
     filter: invert(1);              /* black logo -> white */
 }
 
@@ -987,14 +989,22 @@ button,
     filter: invert(1) drop-shadow(0 0 4px rgba(255, 34, 34, 0.9));
 }
 
+/* blood sits ON the logo: band across its top edge, drips run down over it */
 .socials.socials-header a::after {
-    width: 98px;
-    height: 53px;
-    background-size: 100% 53px;     /* blood stretched sideways too */
+    top: 5px;
+    left: 50%;
+    width: 46px;
+    height: 34px;
+    margin-left: -23px;
+    background-size: 100% 76px;
+}
+
+.socials.socials-header a:nth-child(2)::after {
+    transform: scaleX(-1);
 }
 
 .socials.socials-header a:nth-child(3)::after {
-    height: 46px;
+    height: 30px;
 }
 
 .website.home {
@@ -1004,6 +1014,21 @@ button,
 /* bigger JO777 on the home page */
 .website.home h1 {
     font-size: 88px;
+    position: relative;
+}
+
+/* blood-dot splatter around the icons and the title (texture) */
+.website.home h1::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: -78px;
+    width: 560px;
+    height: 230px;
+    margin-left: -280px;
+    background: url("images/splatter.svg") center / 100% 100% no-repeat;
+    pointer-events: none;
+    z-index: -1;
 }
 
 @media (max-width: 600px) {
@@ -1014,7 +1039,7 @@ button,
 
     .socials.socials-header a,
     .socials.socials-header a:hover {
-        width: 72px;                /* 24px tall x 3 wide */
+        width: 53px;                /* 24px tall x 2.2 wide */
         height: 24px;
     }
 
@@ -1024,13 +1049,15 @@ button,
     }
 
     .socials.socials-header a::after {
-        width: 74px;
-        height: 40px;
-        background-size: 100% 40px;
+        top: 4px;
+        width: 34px;
+        height: 26px;
+        margin-left: -17px;
+        background-size: 100% 56px;
     }
 
     .socials.socials-header a:nth-child(3)::after {
-        height: 34px;
+        height: 22px;
     }
 
     .website.home {
@@ -1039,5 +1066,12 @@ button,
 
     .website.home h1 {
         font-size: 60px;
+    }
+
+    .website.home h1::before {
+        top: -56px;
+        width: 360px;
+        height: 148px;
+        margin-left: -180px;
     }
 }
