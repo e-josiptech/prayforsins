@@ -19,8 +19,11 @@
 
 body {
     background-color: #000000;
-    /* diamond-plate texture, repeated across the whole page */
-    background-image: url("images/plate-tile.jpg");
+    /* diamond-plate texture, faint under black: a black layer at 82%
+       sits on top of the repeated plate (lower % = more plate visible) */
+    background-image:
+        linear-gradient(rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.82)),
+        url("images/plate-tile.jpg");
     background-repeat: repeat;
     color: white;
     font-family: "Courier New", monospace;
