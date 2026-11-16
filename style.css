@@ -943,8 +943,8 @@ button,
 
 
 /* ========== HOME PAGE: social icons above JO777, stretched sideways ========== */
-/* same tiles, blood and hover as before — just centered above the title
-   and stretched 1.5x wide for a distorted, low-quality look */
+/* same tiles, blood and hover as before — centered above the title,
+   smaller and stretched 2.2x wide for a distorted, low-quality look */
 
 .socials.socials-header {
     position: relative;
@@ -952,41 +952,70 @@ button,
     right: auto;
     justify-content: center;
     padding-top: 30px;
+    gap: 12px;
 }
 
 .socials.socials-header a {
-    width: 66px;                    /* 44px x 1.5 */
+    width: 70px;                    /* 32px tall x 2.2 wide */
+    height: 32px;
 }
 
 .socials.socials-header img {
-    transform: scaleX(1.5);
+    width: 19px;
+    height: 19px;
+    transform: scaleX(2.2);
 }
 
 .socials.socials-header a::after {
-    width: 68px;
-    background-size: 100% 75px;     /* blood stretched sideways too */
+    width: 72px;
+    height: 53px;
+    background-size: 100% 53px;     /* blood stretched sideways too */
+}
+
+.socials.socials-header a:nth-child(3)::after {
+    height: 46px;
 }
 
 .website.home {
     padding-top: 30px;
 }
 
+/* bigger JO777 on the home page */
+.website.home h1 {
+    font-size: 88px;
+}
+
 @media (max-width: 600px) {
     .socials.socials-header {
         padding-top: 20px;
-        gap: 10px;
+        gap: 9px;
     }
 
     .socials.socials-header a {
-        width: 45px;                /* 30px x 1.5 */
+        width: 53px;                /* 24px tall x 2.2 wide */
+        height: 24px;
+    }
+
+    .socials.socials-header img {
+        width: 14px;
+        height: 14px;
     }
 
     .socials.socials-header a::after {
-        width: 47px;
-        background-size: 100% 53px;
+        width: 55px;
+        height: 40px;
+        background-size: 100% 40px;
+    }
+
+    .socials.socials-header a:nth-child(3)::after {
+        height: 34px;
     }
 
     .website.home {
         padding-top: 24px;
+    }
+
+    .website.home h1 {
+        font-size: 60px;
     }
 }
