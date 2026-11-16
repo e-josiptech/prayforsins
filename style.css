@@ -955,8 +955,8 @@ button,
 
 
 /* ========== HOME PAGE: social icons above JO777, stretched sideways ========== */
-/* same tiles, blood and hover as before — centered above the title,
-   smaller and stretched 2.2x wide for a distorted, low-quality look */
+/* no white tiles: white logos straight on black with the blood dripping
+   over them, stretched 3x wide for a distorted, low-quality look */
 
 .socials.socials-header {
     position: relative;
@@ -964,22 +964,31 @@ button,
     right: auto;
     justify-content: center;
     padding-top: 30px;
-    gap: 12px;
+    gap: 14px;
 }
 
-.socials.socials-header a {
-    width: 70px;                    /* 32px tall x 2.2 wide */
+.socials.socials-header a,
+.socials.socials-header a:hover {
+    width: 96px;                    /* 32px tall x 3 wide */
     height: 32px;
+    background: transparent;
+    border-color: transparent;
 }
 
-.socials.socials-header img {
+.socials.socials-header img,
+.socials.socials-header a:hover img {
     width: 19px;
     height: 19px;
-    transform: scaleX(2.2);
+    transform: scaleX(3);
+    filter: invert(1);              /* black logo -> white */
+}
+
+.socials.socials-header a:hover img {
+    filter: invert(1) drop-shadow(0 0 4px rgba(255, 34, 34, 0.9));
 }
 
 .socials.socials-header a::after {
-    width: 72px;
+    width: 98px;
     height: 53px;
     background-size: 100% 53px;     /* blood stretched sideways too */
 }
@@ -1000,11 +1009,12 @@ button,
 @media (max-width: 600px) {
     .socials.socials-header {
         padding-top: 20px;
-        gap: 9px;
+        gap: 10px;
     }
 
-    .socials.socials-header a {
-        width: 53px;                /* 24px tall x 2.2 wide */
+    .socials.socials-header a,
+    .socials.socials-header a:hover {
+        width: 72px;                /* 24px tall x 3 wide */
         height: 24px;
     }
 
@@ -1014,7 +1024,7 @@ button,
     }
 
     .socials.socials-header a::after {
-        width: 55px;
+        width: 74px;
         height: 40px;
         background-size: 100% 40px;
     }
