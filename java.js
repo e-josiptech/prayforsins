@@ -595,3 +595,51 @@
     tag.src = "https://www.youtube.com/iframe_api";
     document.head.appendChild(tag);
 })();
+
+
+/* ==========================================================
+   PLATE SPOTLIGHT — the background plate shows around the
+   mouse (eased, so it trails a little) and scrolls slower
+   than the page. Phones: follows the finger.
+   ========================================================== */
+(function () {
+    var layer = document.createElement("div");
+    layer.className = "plate-layer";
+    layer.setAttribute("aria-hidden", "true");
+    document.body.insertBefore(layer, document.body.firstChild);
+
+    var PARALLAX = 0.35;               // plate moves at 35% of scroll speed
+    var EASE = 0.12;                   // how quickly the light catches up
+    var tx = window.innerWidth / 2, ty = window.innerHeight * 0.4;
+    var x = tx, y = ty, running = false;
+
+    function frame() {
+        x += (tx - x) * EASE;
+        y += (ty - y) * EASE;
+        layer.style.setProperty("--mx", x.toFixed(1) + "px");
+        layer.style.setProperty("--my", y.toFixed(1) + "px");
+        if (Math.abs(tx - x) > 0.5 || Math.abs(ty - y) > 0.5) {
+            requestAnimationFrame(frame);
+        } else {
+            running = false;
+        }
+    }
+    function moveTo(nx, ny) {
+        tx = nx; ty = ny;
+        if (!running) { running = true; requestAnimationFrame(frame); }
+    }
+
+    window.addEventListener("pointermove", function (e) { moveTo(e.clientX, e.clientY); }, { passive: true });
+    window.addEventListener("pointerdown", function (e) { moveTo(e.clientX, e.clientY); }, { passive: true });
+    window.addEventListener("touchmove", function (e) {
+        var t = e.touches[0];
+        if (t) moveTo(t.clientX, t.clientY);
+    }, { passive: true });
+
+    function onScroll() {
+        layer.style.setProperty("--py", (-window.scrollY * PARALLAX).toFixed(1) + "px");
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    frame();
+})();

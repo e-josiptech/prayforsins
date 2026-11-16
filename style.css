@@ -1029,3 +1029,29 @@ button,
         font-size: 60px;
     }
 }
+
+
+/* ========== PLATE SPOTLIGHT (java.js) ========== */
+/* Page stays black. A dark diamond-plate texture shows only in a soft
+   circle around the mouse (or finger on phones), and drifts slower than
+   the page when scrolling, for a bit of depth. */
+
+.plate-layer {
+    position: fixed;
+    inset: 0;
+    z-index: -1;                    /* behind everything, on the black page */
+    pointer-events: none;
+    background: url("images/plate-dark.jpg") repeat;
+    background-position: 0 var(--py, 0px);
+    opacity: 0.9;
+    -webkit-mask-image: radial-gradient(circle var(--pr, 340px) at var(--mx, 50%) var(--my, 40%),
+        #000 0%, rgba(0, 0, 0, 0.55) 45%, transparent 100%);
+    mask-image: radial-gradient(circle var(--pr, 340px) at var(--mx, 50%) var(--my, 40%),
+        #000 0%, rgba(0, 0, 0, 0.55) 45%, transparent 100%);
+}
+
+@media (max-width: 600px) {
+    .plate-layer {
+        --pr: 220px;
+    }
+}
