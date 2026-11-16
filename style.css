@@ -19,6 +19,9 @@
 
 body {
     background-color: #000000;
+    /* diamond-plate texture, repeated across the whole page */
+    background-image: url("images/plate-tile.jpg");
+    background-repeat: repeat;
     color: white;
     font-family: "Courier New", monospace;
     text-align: center;
