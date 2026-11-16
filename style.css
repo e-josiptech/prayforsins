@@ -954,18 +954,19 @@ button,
 }
 
 
-/* ========== HOME PAGE: social icons above JO777, stretched sideways ========== */
+/* ========== HOME PAGE: social icons (top-right), stretched sideways ========== */
 /* no white tiles: white logos straight on black with the blood dripping
-   right over them, stretched 2.2x wide for a distorted, low-quality look */
+   right over them, stretched 2.2x wide for a distorted, low-quality look.
+   Sits in the top-right corner of the page. */
 
 .socials.socials-header {
-    position: relative;
-    top: auto;
-    right: auto;
-    justify-content: center;
-    padding-top: 30px;
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    justify-content: flex-end;
+    padding-top: 0;
     gap: 14px;
-    z-index: 2;
+    z-index: 10;
 }
 
 .socials.socials-header a,
@@ -1008,7 +1009,7 @@ button,
 }
 
 .website.home {
-    padding-top: 30px;
+    padding-top: 45px;
 }
 
 /* bigger JO777 on the home page */
@@ -1020,8 +1021,9 @@ button,
 
 @media (max-width: 600px) {
     .socials.socials-header {
-        padding-top: 20px;
-        gap: 10px;
+        top: 10px;
+        right: 10px;
+        gap: 8px;
     }
 
     .socials.socials-header a,
@@ -1048,7 +1050,7 @@ button,
     }
 
     .website.home {
-        padding-top: 24px;
+        padding-top: 58px;          /* room for the corner icons */
     }
 
     .website.home h1 {
