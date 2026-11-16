@@ -294,7 +294,7 @@
 /* ==========================================================
    SOUNDS
    - "click" (GTA menu): switched OFF for now (set CLICK_SOUND_ON = true)
-   - "menu"  (menu button press): every click on anything clickable,
+   - "menu"  (mouse click sound): every click on anything clickable,
              EXCEPT video/song controls (anything inside a .player)
    - "hover" (Windows 7 menu tick): mouse moving onto photos, header,
              links, icons, buttons — like browsing a game menu
@@ -304,15 +304,15 @@
 (function () {
     var CLICK_SOUND_ON = false;    // GTA click — off for now (file kept in sounds/)
     var FILES = {
-        menu: "sounds/menu.m4a",
+        menu: "sounds/mouseclick.m4a",   // mouse click (was menu-button press)
         hover: "sounds/hover.m4a"
     };
     if (CLICK_SOUND_ON) FILES.click = "sounds/click.m4a";
     var HOVER_VOLUME = 0.2;        // menu "tick" when moving onto things
     var HOVERABLE = 'a[href], button, [role="link"], .main-video, h1, ' +
         'h3.live, .photo-frame, .small-pic, .bottom-pic';
-    var VOLUME = 0.1;              // click sound — soft, in the background
-    var NAV_DELAY = { click: 220, menu: 400 };
+    var VOLUME = 0.15;             // click sound — soft (this file is quieter)
+    var NAV_DELAY = { click: 220, menu: 220 };
     var CLICKABLE = 'a[href], button, [role="link"]';
 
     var AC = window.AudioContext || window.webkitAudioContext;
@@ -374,7 +374,7 @@
         var el = e.target.closest && e.target.closest(CLICKABLE);
         if (!el) return;
 
-        var sound = "menu";            // always the menu-button sound
+        var sound = "menu";            // always the mouse click sound
         var isVideoControl = !!el.closest(".player");   // never over songs/videos
 
         if (!isVideoControl && (sound !== "click" || CLICK_SOUND_ON)) play(sound);
