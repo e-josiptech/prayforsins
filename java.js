@@ -289,7 +289,7 @@
     var HOVER_VOLUME = 0.2;        // menu "tick" when moving onto things
     var HOVERABLE = 'a[href], button, [role="link"], .main-video, h1, ' +
         'h3.live, .photo-frame, .small-pic, .bottom-pic';
-    var VOLUME = 0.22;             // click sound — soft (this file is quieter)
+    var VOLUME = 0.35;             // click sound (this file is quiet, so a bit higher)
     var NAV_DELAY = { click: 220, menu: 220 };
     var CLICKABLE = 'a[href], button, [role="link"]';
 
