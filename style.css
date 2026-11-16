@@ -19,10 +19,10 @@
 
 body {
     background-color: #000000;
-    /* diamond-plate texture, faint under black: a black layer at 82%
+    /* diamond-plate texture, very faint under black: a black layer at 92%
        sits on top of the repeated plate (lower % = more plate visible) */
     background-image:
-        linear-gradient(rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.82)),
+        linear-gradient(rgba(0, 0, 0, 0.92), rgba(0, 0, 0, 0.92)),
         url("images/plate2-tile.jpg");
     background-repeat: repeat;
     color: white;
