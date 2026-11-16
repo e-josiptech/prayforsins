@@ -417,7 +417,7 @@
             document.querySelectorAll(".mplayer.show-ctrl").forEach(function (r) {
                 r.classList.add("instant");
                 r.classList.remove("show-ctrl");
-                setTimeout(function () { r.classList.remove("instant"); }, 60);
+                setTimeout(function () { r.classList.remove("instant"); }, 250);
             });
         }, { passive: true });
     }

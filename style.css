@@ -291,9 +291,9 @@ h2.live {
         opacity: 1;
     }
 
-    /* tapped outside: hide at once, no fade */
+    /* tapped outside: quick, soft fade (faster than the normal one) */
     .mplayer.instant .player-controls {
-        transition: none;
+        transition: opacity 0.2s ease-out;
     }
 
     /* hidden controls can't be tapped by accident */
