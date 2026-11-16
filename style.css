@@ -1017,19 +1017,6 @@ button,
     position: relative;
 }
 
-/* blood-dot splatter around the icons and the title (texture) */
-.website.home h1::before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: -78px;
-    width: 560px;
-    height: 230px;
-    margin-left: -280px;
-    background: url("images/splatter.svg") center / 100% 100% no-repeat;
-    pointer-events: none;
-    z-index: -1;
-}
 
 @media (max-width: 600px) {
     .socials.socials-header {
@@ -1066,12 +1053,5 @@ button,
 
     .website.home h1 {
         font-size: 60px;
-    }
-
-    .website.home h1::before {
-        top: -56px;
-        width: 360px;
-        height: 148px;
-        margin-left: -180px;
     }
 }
