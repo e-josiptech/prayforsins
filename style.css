@@ -955,7 +955,8 @@ button,
 
 
 /* ========== HOME PAGE: social links as text (top-right) ========== */
-/* same look as the CLICK text: bold typewriter, wide spacing, warped */
+/* bold typewriter like CLICK, low-quality blur but NOT warped,
+   so all letters sit straight on one line */
 
 .social-text {
     position: absolute;
@@ -973,17 +974,11 @@ button,
     font-weight: bold;
     letter-spacing: 3px;
     text-decoration: none;
-    filter: url(#seven-warp) blur(0.8px) contrast(1.6);
+    filter: blur(0.6px) contrast(1.6);
 }
 
 .social-text a:hover {
     color: #ff2222;
-}
-
-@media (hover: none) and (pointer: coarse) {
-    .social-text a {
-        filter: blur(0.8px) contrast(1.6);   /* iPhone-safe */
-    }
 }
 
 .website.home {
