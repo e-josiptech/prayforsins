@@ -353,8 +353,8 @@
         if (!el) return;
 
         var sound = "menu";            // always the mouse click sound
-        // video controls stay silent, except PLAY / PAUSE
-        var isVideoControl = !!el.closest(".player") && !el.matches('[data-act="play"]');
+        // video controls stay silent, except PLAY / PAUSE and the sound on/off button
+        var isVideoControl = !!el.closest(".player") && !el.matches('[data-act="play"], [data-act="sound"]');
 
         if (!isVideoControl && (sound !== "click" || CLICK_SOUND_ON)) play(sound);
 
