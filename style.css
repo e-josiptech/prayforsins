@@ -1065,3 +1065,16 @@ button,
         --pr: 220px;
     }
 }
+
+/* ==========================================================
+   NO SELECTING — title and crosses can't be highlighted/copied
+   ========================================================== */
+.title-row,
+.title-row h1,
+.cross,
+.cross-shadow,
+.heart-link {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;   /* iPhone long-press copy menu */
+}
