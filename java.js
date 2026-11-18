@@ -613,11 +613,25 @@
     var tx = window.innerWidth / 2, ty = window.innerHeight * 0.4;
     var x = tx, y = ty, running = false;
 
+    // Mary logo: mostly hidden in the dark, the same light reveals her
+    var mary = document.querySelector(".mary-link img");
+    function lightMary() {
+        if (!mary) return;
+        var r = mary.getBoundingClientRect();
+        var radius = window.innerWidth <= 600 ? 220 : 340;   // same as the plate light
+        var g = "radial-gradient(circle " + radius + "px at " +
+                (x - r.left).toFixed(1) + "px " + (y - r.top).toFixed(1) + "px, " +
+                "#000 0%, rgba(0,0,0,0.5) 40%, rgba(0,0,0,0.06) 100%)";
+        mary.style.webkitMaskImage = g;
+        mary.style.maskImage = g;
+    }
+
     function frame() {
         x += (tx - x) * EASE;
         y += (ty - y) * EASE;
         layer.style.setProperty("--mx", x.toFixed(1) + "px");
         layer.style.setProperty("--my", y.toFixed(1) + "px");
+        lightMary();
         if (Math.abs(tx - x) > 0.5 || Math.abs(ty - y) > 0.5) {
             requestAnimationFrame(frame);
         } else {
@@ -638,6 +652,7 @@
 
     function onScroll() {
         layer.style.setProperty("--py", (-window.scrollY * PARALLAX).toFixed(1) + "px");
+        lightMary();
     }
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
