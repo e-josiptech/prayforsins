@@ -658,3 +658,23 @@
     onScroll();
     frame();
 })();
+
+
+/* ==========================================================
+   NO DOWNLOADING — no right-click "Save image/video as",
+   no dragging pictures to the desktop, no iPhone long-press save
+   (works on every page, for every picture and video)
+   ========================================================== */
+(function () {
+    var MEDIA = "img, video, picture, .player, .g-item, .photo-frame, .yt-box";
+    document.addEventListener("contextmenu", function (e) {
+        if (e.target.closest && e.target.closest(MEDIA)) e.preventDefault();
+    });
+    document.addEventListener("dragstart", function (e) {
+        if (e.target.closest && e.target.closest(MEDIA)) e.preventDefault();
+    });
+    // remove the browser's built-in "download" option on videos
+    Array.prototype.forEach.call(document.querySelectorAll("video"), function (v) {
+        v.setAttribute("controlsList", "nodownload noremoteplayback noplaybackrate");
+    });
+})();
