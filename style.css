@@ -1118,29 +1118,20 @@ button,
 }
 
 /* ==========================================================
-   GALLERY PAGE
+   GALLERY PAGE — one column, each photo under the one above
+   (same width as the videos on music.html)
    ========================================================== */
 .gallery {
-    max-width: 1000px;
+    max-width: 680px;
+    width: 90%;
     margin: 0 auto 60px;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;        /* photos stay centered, however many */
-    align-items: flex-start;
-    gap: 24px;
-}
-
-/* two columns; each photo sits under the one above it */
-.g-col {
-    display: flex;
     flex-direction: column;
-    gap: 24px;
-    width: 300px;
+    gap: 40px;
 }
 
 .g-item {
     margin: 0;
-    width: 100%;
     border: 4px solid #8b0018;
     box-shadow: 4px 4px 0 #2a0008, 0 0 12px rgba(209, 0, 0, 0.3);
     background: #000;
@@ -1154,18 +1145,8 @@ button,
     pointer-events: none;           /* no right-click "save image" */
 }
 
-.gallery-empty {
-    width: 100%;
-    font-size: 18px;
-    letter-spacing: 3px;
-    opacity: 0.6;
-}
-
 @media (max-width: 600px) {
-    .gallery {
-        gap: 12px;
-    }
-    .g-col { width: calc(50% - 6px); gap: 12px; }
+    .gallery { width: 100%; gap: 24px; }
     .g-item { border-width: 3px; }
 }
 
