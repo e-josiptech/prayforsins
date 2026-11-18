@@ -1130,9 +1130,17 @@ button,
     gap: 24px;
 }
 
+/* two columns; each photo sits under the one above it */
+.g-col {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 300px;
+}
+
 .g-item {
     margin: 0;
-    width: 300px;
+    width: 100%;
     border: 4px solid #8b0018;
     box-shadow: 4px 4px 0 #2a0008, 0 0 12px rgba(209, 0, 0, 0.3);
     background: #000;
@@ -1157,7 +1165,8 @@ button,
     .gallery {
         gap: 12px;
     }
-    .g-item { border-width: 3px; width: calc(50% - 6px); }
+    .g-col { width: calc(50% - 6px); gap: 12px; }
+    .g-item { border-width: 3px; }
 }
 
 /* ==========================================================
