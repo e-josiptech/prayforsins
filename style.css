@@ -1117,6 +1117,17 @@ button,
     }
 }
 
+/* Mary smaller on the main page only */
+.home .mary-link img {
+    height: 46px;
+}
+
+@media (max-width: 600px) {
+    .home .mary-link img {
+        height: 34px;
+    }
+}
+
 /* ==========================================================
    GALLERY PAGE — one column, each photo under the one above
    (same width as the videos on music.html)
