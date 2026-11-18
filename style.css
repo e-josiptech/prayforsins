@@ -1145,6 +1145,19 @@ button,
     pointer-events: none;           /* no right-click "save image" */
 }
 
+/* videos in the gallery: same red frame as on music.html */
+.gallery video {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 7px solid #880927;
+    background: #111;
+}
+
+.gallery .mplayer {
+    margin-bottom: 0;
+}
+
 @media (max-width: 600px) {
     .gallery { width: 92%; gap: 22px; }
     .g-item { border-width: 3px; }
