@@ -1122,12 +1122,12 @@ button,
    (same width as the videos on music.html)
    ========================================================== */
 .gallery {
-    max-width: 680px;
+    max-width: 440px;               /* smaller than the videos, easier to scroll */
     width: 90%;
     margin: 0 auto 60px;
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 32px;
 }
 
 .g-item {
@@ -1146,7 +1146,7 @@ button,
 }
 
 @media (max-width: 600px) {
-    .gallery { width: 100%; gap: 24px; }
+    .gallery { width: 82%; gap: 22px; }
     .g-item { border-width: 3px; }
 }
 
